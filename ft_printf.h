@@ -6,7 +6,7 @@
 /*   By: aimelda <aimelda@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/23 21:58:49 by aimelda           #+#    #+#             */
-/*   Updated: 2020/01/28 20:24:34 by aimelda          ###   ########.fr       */
+/*   Updated: 2020/01/28 21:49:52 by aimelda          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,8 @@ typedef struct	s_printf
 
 typedef struct	s_args
 {
-	t_printf		**usedin;
+	t_printf		*usedin;
 	void			*content;
 }				t_args;
-
-int				ft_printf_atoi(const char **str)
 
 #endif
