@@ -6,7 +6,7 @@
 /*   By: aimelda <aimelda@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/23 21:58:49 by aimelda           #+#    #+#             */
-/*   Updated: 2020/01/25 11:03:46 by aimelda          ###   ########.fr       */
+/*   Updated: 2020/01/28 20:24:34 by aimelda          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,5 +15,30 @@
 
 # include <stdarg.h>
 # include "libft/libft.h"
+
+typedef struct	s_printf
+{
+	char			*text;
+	size_t			text_length;
+	size_t			arg_number;
+	char			arg_type;
+	char			sign;
+	char			zero;
+	char			sharp;
+	char			left_adjusted;
+	char			width_asterisk;
+	int				width;
+	char			precision_asterisk_or_defined;
+	int				precision;
+	struct s_printf	*next;
+}				t_printf;
+
+typedef struct	s_args
+{
+	t_printf		**usedin;
+	void			*content;
+}				t_args;
+
+int				ft_printf_atoi(const char **str)
 
 #endif
