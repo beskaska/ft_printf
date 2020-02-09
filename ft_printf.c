@@ -6,21 +6,21 @@
 /*   By: aimelda <aimelda@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/23 21:57:51 by aimelda           #+#    #+#             */
-/*   Updated: 2020/02/08 21:49:56 by aimelda          ###   ########.fr       */
+/*   Updated: 2020/02/09 14:09:46 by aimelda          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-static t_printf	*new_node(const char *format)
+static t_printf	*new_node(char *format)
 {
 	t_printf	*tmp;
 
 	tmp = (t_printf*)malloc(sizeof(t_printf));
 	tmp->text = format;
 	tmp->text_length = 0;
-	//tmp->arg_number = 0; //replace by arg_text
-	//tmp->arg_type = 1; //move to args
+	tmp->arg_number = 0;
+	tmp->arg_text = NULL;
 	tmp->sign = 0;
 	tmp->zero = 0;
 	tmp->sharp = 0;
@@ -33,7 +33,7 @@ static t_printf	*new_node(const char *format)
 	return (tmp);
 }
 
-static void		look_up(char *format, t_printf *cur, t_args **args)
+static void		parsing(char *format, t_printf *cur, t_args **args)
 {
 	int			n;
 
@@ -41,9 +41,9 @@ static void		look_up(char *format, t_printf *cur, t_args **args)
 	while (--n)
 		args[n] = NULL;
 	args[0] = (t_args*)malloc(sizeof(t_args));
-	args[0]->arg_type = MAX_PRINTF_ARG;
+	args[0]->arg_type = 0;
 	while (*format)
-		if (*format++ == '%')
+		if (*format == '%')
 		{
 			ft_printf_parsing(&format, cur, args);
 			if (*(++format))
@@ -51,7 +51,10 @@ static void		look_up(char *format, t_printf *cur, t_args **args)
 			cur = cur->next;
 		}
 		else
+		{
 			cur->text_length++;
+			format++;
+		}
 }
 
 int		ft_printf(const char *format, ...)
@@ -59,10 +62,10 @@ int		ft_printf(const char *format, ...)
 	va_list		ap;
 	t_printf	*head;
 	t_args		*args[MAX_PRINTF_ARG];
-
+	
 	va_start(ap, format);
-	head = new_node(format);
-	look_up((char*)format, head, args);
+	head = new_node((char*)format);
+	parsing((char*)format, head, args);
 	va_end(ap);
 	return (ft_printf_print(head, args, ap));
 }

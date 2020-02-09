@@ -6,7 +6,7 @@
 /*   By: aimelda <aimelda@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/06 22:44:45 by aimelda           #+#    #+#             */
-/*   Updated: 2020/02/08 16:43:40 by aimelda          ###   ########.fr       */
+/*   Updated: 2020/02/09 12:55:29 by aimelda          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ char			*ft_strsub(char const *s, unsigned int start, size_t len);
 char			*ft_strjoin(char const *s1, char const *s2);
 char			*ft_strtrim(char const *s);
 char			**ft_strsplit(char const *s, char c);
-char			*ft_itoa(int n);
+char			*ft_itoa(long long n);
 void			ft_putchar(char c);
 void			ft_putstr(char const *s);
 void			ft_putendl(char const *s);
@@ -97,7 +97,7 @@ void			ft_lstiter(t_list *lst, void (*f)(t_list *elem));
 t_list			*ft_lstmap(t_list *lst, t_list *(*f)(t_list *elem));
 
 t_list			*ft_lstremfront(t_list *head);
-size_t			ft_abs(int n);
+size_t			ft_abs(long long n);
 size_t			ft_max(size_t n1, size_t n2);
 size_t			ft_min(size_t n1, size_t n2);
 int				ft_isspace(int c);

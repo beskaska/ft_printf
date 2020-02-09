@@ -6,7 +6,7 @@
 #    By: aimelda <aimelda@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/09/06 21:18:08 by aimelda           #+#    #+#              #
-#    Updated: 2020/02/08 14:19:06 by aimelda          ###   ########.fr        #
+#    Updated: 2020/02/09 13:38:21 by aimelda          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,6 +16,8 @@ HDR		=	ft_printf.h
 
 SRC		=	ft_printf.c			\
 			parsing.c			\
+			printing.c			\
+			specifiers.c		\
 
 OBJ		=	$(addsuffix .o, $(basename $(SRC)))
 
@@ -25,7 +27,7 @@ all: $(NAME)
 
 $(NAME): $(SRC)
 	make -C libft/
-	gcc -I$(HDR) -c $?
+	gcc -g -I$(HDR) -c $?
 	ar rc $@ $(NEW_OBJ)
 	ranlib $@
 

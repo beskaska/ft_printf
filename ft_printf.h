@@ -6,7 +6,7 @@
 /*   By: aimelda <aimelda@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/23 21:58:49 by aimelda           #+#    #+#             */
-/*   Updated: 2020/02/08 21:52:19 by aimelda          ###   ########.fr       */
+/*   Updated: 2020/02/09 13:03:22 by aimelda          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ typedef struct	s_printf
 	char			*text;
 	size_t			text_length;
 	size_t			arg_number;
-	size_t			arg_type;
+	char			*arg_text;
 	char			sign;
 	char			zero;
 	char			sharp;
@@ -44,7 +44,8 @@ typedef struct	s_args
 	struct s_args	*next;
 }				t_args;
 
+int				ft_printf(const char *format, ...);
 void			ft_printf_parsing(char **format, t_printf *cur, t_args **args);
 int				ft_printf_print(t_printf *cur, t_args **args, va_list ap);
-
+void			to_signed_decimal(t_args *arg, va_list ap);
 #endif
