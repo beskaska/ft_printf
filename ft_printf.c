@@ -6,7 +6,7 @@
 /*   By: aimelda <aimelda@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/23 21:57:51 by aimelda           #+#    #+#             */
-/*   Updated: 2020/01/28 21:47:07 by aimelda          ###   ########.fr       */
+/*   Updated: 2020/02/08 21:49:56 by aimelda          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,93 +19,50 @@ static t_printf	*new_node(const char *format)
 	tmp = (t_printf*)malloc(sizeof(t_printf));
 	tmp->text = format;
 	tmp->text_length = 0;
-	tmp->arg_number = 1; //maybe should passing as a parameter?
-	//tmp->arg_type?
+	//tmp->arg_number = 0; //replace by arg_text
+	//tmp->arg_type = 1; //move to args
 	tmp->sign = 0;
 	tmp->zero = 0;
 	tmp->sharp = 0;
 	tmp->left_adjusted = 0;
-	tmp->width_asterisk = 0;
+	tmp->width_asterisk = -1;
 	tmp->width = 0;
-	tmp->precision_asterisk_or_defined = 0;
+	tmp->precision_asterisk = -1;
 	tmp->precision = 0;
 	tmp->next = NULL;
+	return (tmp);
 }
 
-static int		argument_or_width(const char **str, t_printf *cur, t_args **args)
+static void		look_up(char *format, t_printf *cur, t_args **args)
 {
-	size_t	res;
+	int			n;
 
-	res = 0;
-	while (ft_isdigit(**str))
-	{
-		res = res * 10 + **str - '0';
-		(*str)++;
-	}
-	if (**str == '$')
-		args[res]->usedin = cur; //need to save max_arg
-	else
-	{
-		cur->width = res;
-		(*str)--;
-	}
-	return (res); //no need?
-}
-
-static int		parsing(const char **format, t_printf *cur, t_args **args)
-{
-	while ((*format)++)
-		if (ft_isdigit(**format))
-			argument_or_width(format, cur, args);
-		else if (**format == '+' || **format == ' ')
-			cur->sign = **format;
-		else if (**format == '0')
-			cur->zero = '0';
-		else if (**format == '#')
-			cur->sharp = 1;
-		else if (**format == '-')
-			cur->left_adjusted = 1;
-		else if (**format == '.')
-			;//precision
-		else if (**format == '*')
-			;//width
-		/*else if (**format == '%')
-			;//%  always true???*/
-		else
-			break;
-	if (ft_strchr("cspdiouxXfeghlL", **format))
-		;//type and size
-}
-
-static int		look_up(const char *format, va_list *ap, t_printf *cur)
-{
-	int			sum;
-	int			max_arg;
-	t_args		*args[190];
-
-	sum = 0;
-	max_arg = 0;
+	n = MAX_PRINTF_ARG;
+	while (--n)
+		args[n] = NULL;
+	args[0] = (t_args*)malloc(sizeof(t_args));
+	args[0]->arg_type = MAX_PRINTF_ARG;
 	while (*format)
-	{
-		if (*format == '%')
+		if (*format++ == '%')
 		{
-			parsing(&format, cur, args);
+			ft_printf_parsing(&format, cur, args);
+			if (*(++format))
+				cur->next = new_node(format);
+			cur = cur->next;
 		}
 		else
 			cur->text_length++;
-		format++;
-	}
 }
 
 int		ft_printf(const char *format, ...)
 {
 	va_list		ap;
-	int			sum;
 	t_printf	*head;
+	t_args		*args[MAX_PRINTF_ARG];
 
 	va_start(ap, format);
 	head = new_node(format);
-	sum = look_up(format, &ap, head);
+	look_up((char*)format, head, args);
 	va_end(ap);
-	return (sum);
+	return (ft_printf_print(head, args, ap));
 }

@@ -6,7 +6,7 @@
 #    By: aimelda <aimelda@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/09/06 21:18:08 by aimelda           #+#    #+#              #
-#    Updated: 2020/01/25 20:26:04 by aimelda          ###   ########.fr        #
+#    Updated: 2020/02/08 14:19:06 by aimelda          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,6 +15,7 @@ NAME	=	libftprintf.a
 HDR		=	ft_printf.h
 
 SRC		=	ft_printf.c			\
+			parsing.c			\
 
 OBJ		=	$(addsuffix .o, $(basename $(SRC)))
 

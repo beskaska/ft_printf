@@ -6,15 +6,17 @@
 /*   By: aimelda <aimelda@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/25 20:08:41 by aimelda           #+#    #+#             */
-/*   Updated: 2020/01/25 21:02:51 by aimelda          ###   ########.fr       */
+/*   Updated: 2020/02/08 21:48:41 by aimelda          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.c"
+#include <stdio.h>
+#include "ft_printf.h"
 
 int		main()
 {
-	int	d = 5;
+	float	d = 4563211.21;
+	int f = 33;
 
-	ft_printf("Test %d\n", d);
+	printf("Test %1$d! %1$f %1$hhd\n ", d);
 }
