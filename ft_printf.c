@@ -6,7 +6,7 @@
 /*   By: aimelda <aimelda@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/23 21:57:51 by aimelda           #+#    #+#             */
-/*   Updated: 2020/02/09 14:09:46 by aimelda          ###   ########.fr       */
+/*   Updated: 2020/02/10 23:06:34 by aimelda          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ static t_printf	*new_node(char *format)
 	tmp->text_length = 0;
 	tmp->arg_number = 0;
 	tmp->arg_text = NULL;
+	tmp->arg_length = 1;
 	tmp->sign = 0;
 	tmp->zero = 0;
 	tmp->sharp = 0;
