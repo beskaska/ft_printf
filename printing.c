@@ -6,7 +6,7 @@
 /*   By: aimelda <aimelda@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/08 16:30:25 by aimelda           #+#    #+#             */
-/*   Updated: 2020/02/10 23:13:57 by aimelda          ###   ########.fr       */
+/*   Updated: 2020/02/11 23:19:24 by aimelda          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,18 @@ static void		converting(t_args **args, va_list ap)
 			!(args[i]->arg_type % 'o') || !(args[i]->arg_type % 'u') ||
 			!(args[i]->arg_type % 'x') || !(args[i]->arg_type % 'X'))
 				to_diouxX(args[i], ap);
-			
+			else if (!(args[i]->arg_type % 'f') || !(args[i]->arg_type % 'e')
+			|| !(args[i]->arg_type % 'g'))
+				;//to_feg(args[i], ap)
+			else if (!(args[i]->arg_type % 's') || !(args[i]->arg_type % 'p'))
+				;//to_sp(args[i], ap)
+			else if (!(args[i]->arg_type % 'c'))
+				;//to_c(args[i], ap)
+			else if (args[i]->arg_type == 1)
+				if (args[i]->usedin->precision_asterisk == i)
+					args[i]->usedin->precision = va_arg(ap, int);
+				else if (args[i]->usedin->width_asterisk == i)
+					args[i]->usedin->width = va_arg(ap, int);
 			args[i] = free_args(args[i]);
 		}	
 }
