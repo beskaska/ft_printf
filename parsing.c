@@ -6,7 +6,7 @@
 /*   By: aimelda <aimelda@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 19:26:23 by aimelda           #+#    #+#             */
-/*   Updated: 2020/02/09 11:47:48 by aimelda          ###   ########.fr       */
+/*   Updated: 2020/02/12 22:37:36 by aimelda          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ static void		arg_or_width(char **str, t_printf *cur, t_args **args)
 	if (res && **str == '$') //probably need to handle multiple using of an argument
 	{
 		arg_malloc(args, cur, res);
-		cur->arg_number = res; //--- here
+		cur->arg_number = res; //--- here // NOT NEED
 	}
 	else
 	{
@@ -122,7 +122,7 @@ void			ft_printf_parsing(char **format, t_printf *cur, t_args **args)
 			get_width(format, cur, args);
 		else
 			break;
-	if (!cur->arg_number)
+	if (!cur->arg_number)//NOT NEED
 	{
 		cur->arg_number = ++(args[0]->arg_type);
 		arg_malloc(args, cur, args[0]->arg_type);

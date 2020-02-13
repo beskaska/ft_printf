@@ -6,7 +6,7 @@
 /*   By: aimelda <aimelda@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/23 21:57:51 by aimelda           #+#    #+#             */
-/*   Updated: 2020/02/10 23:06:34 by aimelda          ###   ########.fr       */
+/*   Updated: 2020/02/12 22:33:58 by aimelda          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static t_printf	*new_node(char *format)
 	tmp = (t_printf*)malloc(sizeof(t_printf));
 	tmp->text = format;
 	tmp->text_length = 0;
-	tmp->arg_number = 0;
+	tmp->arg_number = 0; //NOT USED
 	tmp->arg_text = NULL;
 	tmp->arg_length = 1;
 	tmp->sign = 0;

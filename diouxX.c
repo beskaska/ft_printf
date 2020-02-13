@@ -6,7 +6,7 @@
 /*   By: aimelda <aimelda@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/08 13:39:29 by aimelda           #+#    #+#             */
-/*   Updated: 2020/02/11 23:04:26 by aimelda          ###   ########.fr       */
+/*   Updated: 2020/02/12 21:23:46 by aimelda          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ static char	*unsigned_hex(unsigned long long n, t_printf *cur, char c)
 	return (res);
 }
 
-void	to_diouxX(t_args *arg, va_list ap)
+void		to_diouxX(t_args *arg, va_list ap)
 {
 	long long	d;
 

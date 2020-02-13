@@ -6,7 +6,7 @@
 #    By: aimelda <aimelda@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/09/06 21:18:08 by aimelda           #+#    #+#              #
-#    Updated: 2020/02/11 20:55:44 by aimelda          ###   ########.fr        #
+#    Updated: 2020/02/12 21:23:16 by aimelda          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,6 +18,7 @@ SRC		=	ft_printf.c			\
 			parsing.c			\
 			printing.c			\
 			diouxX.c			\
+			csp.c				\
 
 OBJ		=	$(addsuffix .o, $(basename $(SRC)))
 

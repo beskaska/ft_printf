@@ -6,7 +6,7 @@
 /*   By: aimelda <aimelda@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/23 21:58:49 by aimelda           #+#    #+#             */
-/*   Updated: 2020/02/10 23:12:16 by aimelda          ###   ########.fr       */
+/*   Updated: 2020/02/13 21:35:46 by aimelda          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,4 +49,7 @@ int				ft_printf(const char *format, ...);
 void			ft_printf_parsing(char **format, t_printf *cur, t_args **args);
 int				ft_printf_print(t_printf *cur, t_args **args, va_list ap);
 void			to_diouxX(t_args *arg, va_list ap);
+void			to_csp(t_args *arg, va_list ap);
+void			to_feg(t_args *arg, va_list ap);
+
 #endif

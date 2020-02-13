@@ -6,7 +6,7 @@
 /*   By: aimelda <aimelda@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/08 16:30:25 by aimelda           #+#    #+#             */
-/*   Updated: 2020/02/11 23:19:24 by aimelda          ###   ########.fr       */
+/*   Updated: 2020/02/12 22:45:30 by aimelda          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,15 +46,19 @@ static void		converting(t_args **args, va_list ap)
 			else if (!(args[i]->arg_type % 'f') || !(args[i]->arg_type % 'e')
 			|| !(args[i]->arg_type % 'g'))
 				;//to_feg(args[i], ap)
-			else if (!(args[i]->arg_type % 's') || !(args[i]->arg_type % 'p'))
-				;//to_sp(args[i], ap)
-			else if (!(args[i]->arg_type % 'c'))
-				;//to_c(args[i], ap)
-			else if (args[i]->arg_type == 1)
+			else if (!(args[i]->arg_type % 'c')) //sep func
+				args[i]->usedin->arg_text = (char*)ft_memset(ft_memalloc(2), va_arg(ap, int), 1);
+			else if (!(args[i]->arg_type % 's'))
+				args[i]->usedin->arg_text = va_arg(ap, char*);
+			else if (!(args[i]->arg_type % 'p'))
+				;//to_p(args[i], ap)
+			if (args[i]->arg_type == 1)
+			{//separate function
 				if (args[i]->usedin->precision_asterisk == i)
 					args[i]->usedin->precision = va_arg(ap, int);
-				else if (args[i]->usedin->width_asterisk == i)
+				if (args[i]->usedin->width_asterisk == i)
 					args[i]->usedin->width = va_arg(ap, int);
+			}
 			args[i] = free_args(args[i]);
 		}	
 }
