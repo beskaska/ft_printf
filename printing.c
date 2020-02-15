@@ -6,19 +6,24 @@
 /*   By: aimelda <aimelda@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/08 16:30:25 by aimelda           #+#    #+#             */
-/*   Updated: 2020/02/12 22:45:30 by aimelda          ###   ########.fr       */
+/*   Updated: 2020/02/15 14:10:08 by aimelda          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-static t_args	*free_args(t_args *to_del)
+static void	*free_args(t_args *to_del)
 {
 	t_args	*tmp;
 
-	tmp = to_del->next;
+	while (to_del->next)
+	{
+		tmp = to_del->next;
+		tmp->usedin->content = to_del->usedin->content;
+		free(to_del);
+		to_del = tmp;
+	}
 	free(to_del);
-	return (tmp);
 }
 
 static t_printf	*free_printf(t_printf *to_del)
@@ -30,37 +35,66 @@ static t_printf	*free_printf(t_printf *to_del)
 	return (tmp);
 }
 
+static void		get_long_long(t_printf *cur, va_list ap)
+{
+	cur->content = malloc(sizeof(long long));
+	if (!(cur->arg_type % 'h' % 'h'))
+	{
+		cur->content = (long long)va_arg(ap, char);
+		cur->arg_type /= 'h' / 'h';
+	}
+	else if (!(cur->arg_type % 'h'))
+	{
+		cur->content = (long long)va_arg(ap, short);
+		cur->arg_type /= 'h';
+	}
+	else if (!(cur->arg_type % 'l' % 'l'))
+	{
+		cur->content = va_arg(ap, long long);
+		cur->arg_type /= 'l' / 'l';
+	}
+	else if (!(cur->arg_type % 'l'))
+	{
+		cur->content = (long long)va_arg(ap, long);
+		cur->arg_type /= 'l';
+	}
+	else
+		cur->content = (long long)va_arg(ap, int);
+}
+
 static void		converting(t_args **args, va_list ap)
 {
-	int		i;
-	t_args	*tmp;
+	int			i;
+	t_printf	*tmp;
 
 	i = 0;
-	while (++i <= args[0]->arg_type)
-		while (args[i])
+	while (++i < MAX_PRINTF_ARG) //check
+		if (args[i])
 		{
-			if (!(args[i]->arg_type % 'd') || !(args[i]->arg_type % 'i') ||
-			!(args[i]->arg_type % 'o') || !(args[i]->arg_type % 'u') ||
-			!(args[i]->arg_type % 'x') || !(args[i]->arg_type % 'X'))
-				to_diouxX(args[i], ap);
+			tmp = args[i]->usedin;
+			if (!(tmp->arg_type % 'd') || !(tmp->arg_type % 'i') ||
+			!(tmp->arg_type % 'o') || !(tmp->arg_type % 'u') ||
+			!(tmp->arg_type % 'x') || !(tmp->arg_type % 'X') ||
+			!(tmp->arg_type % 'c'))
+				get_long_long(tmp, ap);
 			else if (!(args[i]->arg_type % 'f') || !(args[i]->arg_type % 'e')
 			|| !(args[i]->arg_type % 'g'))
 				;//to_feg(args[i], ap)
 			else if (!(args[i]->arg_type % 'c')) //sep func
-				args[i]->usedin->arg_text = (char*)ft_memset(ft_memalloc(2), va_arg(ap, int), 1);
+				tmp->arg_text = (char*)ft_memset(ft_memalloc(2), va_arg(ap, int), 1);
 			else if (!(args[i]->arg_type % 's'))
-				args[i]->usedin->arg_text = va_arg(ap, char*);
+				tmp->arg_text = va_arg(ap, char*);
 			else if (!(args[i]->arg_type % 'p'))
 				;//to_p(args[i], ap)
 			if (args[i]->arg_type == 1)
 			{//separate function
-				if (args[i]->usedin->precision_asterisk == i)
-					args[i]->usedin->precision = va_arg(ap, int);
-				if (args[i]->usedin->width_asterisk == i)
-					args[i]->usedin->width = va_arg(ap, int);
+				if (tmp->precision_asterisk == i)
+					tmp->precision = va_arg(ap, int);
+				if (tmp->width_asterisk == i)
+					tmp->width = va_arg(ap, int);
 			}
-			args[i] = free_args(args[i]);
-		}	
+			free_args(args[i]);
+		}
 }
 
 int				ft_printf_print(t_printf *cur, t_args **args, va_list ap)

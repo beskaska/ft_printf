@@ -6,7 +6,7 @@
 /*   By: aimelda <aimelda@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/23 21:57:51 by aimelda           #+#    #+#             */
-/*   Updated: 2020/02/12 22:33:58 by aimelda          ###   ########.fr       */
+/*   Updated: 2020/02/15 13:06:58 by aimelda          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,9 @@ static t_printf	*new_node(char *format)
 	tmp = (t_printf*)malloc(sizeof(t_printf));
 	tmp->text = format;
 	tmp->text_length = 0;
-	tmp->arg_number = 0; //NOT USED
-	tmp->arg_text = NULL;
+	//tmp->arg_number = 0; //NOT USED
+	tmp->arg_type = 1;
+	tmp->arg_text = NULL; //?
 	tmp->arg_length = 1;
 	tmp->sign = 0;
 	tmp->zero = 0;
@@ -36,13 +37,11 @@ static t_printf	*new_node(char *format)
 
 static void		parsing(char *format, t_printf *cur, t_args **args)
 {
-	int			n;
+	int			max_arg;
 
-	n = MAX_PRINTF_ARG;
-	while (--n)
-		args[n] = NULL;
-	args[0] = (t_args*)malloc(sizeof(t_args));
-	args[0]->arg_type = 0;
+	max_arg = MAX_PRINTF_ARG;
+	while (--max_arg)
+		args[max_arg] = NULL;
 	while (*format)
 		if (*format == '%')
 		{

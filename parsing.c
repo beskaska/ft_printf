@@ -6,7 +6,7 @@
 /*   By: aimelda <aimelda@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 19:26:23 by aimelda           #+#    #+#             */
-/*   Updated: 2020/02/12 22:37:36 by aimelda          ###   ########.fr       */
+/*   Updated: 2020/02/15 13:12:40 by aimelda          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,11 @@ static void		arg_malloc(t_args **args, t_printf *cur, int res)
 	{
 		args[res] = (t_args*)malloc(sizeof(t_args));
 		args[res]->next = NULL;
-		if (res > args[0]->arg_type)
-			args[0]->arg_type = res;
+		/*if (res > args[0]->arg_type)
+			args[0]->arg_type = res;*/
 	}
 	args[res]->usedin = cur;
-	args[res]->arg_type = 1;
+	//args[res]->arg_type = 1;
 }
 
 static void		arg_or_width(char **str, t_printf *cur, t_args **args)
@@ -43,7 +43,7 @@ static void		arg_or_width(char **str, t_printf *cur, t_args **args)
 	if (res && **str == '$') //probably need to handle multiple using of an argument
 	{
 		arg_malloc(args, cur, res);
-		cur->arg_number = res; //--- here // NOT NEED
+		//cur->arg_number = res; //--- here // NOT NEED
 	}
 	else
 	{
@@ -72,7 +72,7 @@ static void		get_precision(char **str, t_printf *cur, t_args **args)
 		}
 		else
 		{
-			cur->precision_asterisk = ++(args[0]->arg_type); //--- here
+			//cur->precision_asterisk = ++(args[0]->arg_type); //--- here
 			(*str)--;
 		}
 	else
@@ -98,7 +98,7 @@ static void		get_width(char **str, t_printf *cur, t_args **args)
 	}
 	else
 	{
-		cur->width_asterisk = ++(args[0]->arg_type); //--- here
+		//cur->width_asterisk = ++(args[0]->arg_type); //--- here
 		(*str)--;
 	}
 }
@@ -122,13 +122,13 @@ void			ft_printf_parsing(char **format, t_printf *cur, t_args **args)
 			get_width(format, cur, args);
 		else
 			break;
-	if (!cur->arg_number)//NOT NEED
+	/*if (!cur->arg_number)//NOT NEED
 	{
 		cur->arg_number = ++(args[0]->arg_type);
 		arg_malloc(args, cur, args[0]->arg_type);
-	}
+	}*/
 	while (ft_strchr(PRINTF_FLAGS, **format))
-		args[cur->arg_number]->arg_type *= *((*format)++);
+		cur->arg_type *= *((*format)++);
 	if (ft_strchr(CONVERSION_SPECIFIERS, **format))
-		args[cur->arg_number]->arg_type *= **format;
+		cur->arg_type *= **format;
 }

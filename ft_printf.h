@@ -6,7 +6,7 @@
 /*   By: aimelda <aimelda@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/23 21:58:49 by aimelda           #+#    #+#             */
-/*   Updated: 2020/02/13 21:35:46 by aimelda          ###   ########.fr       */
+/*   Updated: 2020/02/15 13:51:37 by aimelda          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,10 @@ typedef struct	s_printf
 {
 	char			*text;
 	size_t			text_length;
-	size_t			arg_number;
-	char			*arg_text;
+	//size_t			arg_number;
+	size_t			arg_type;
+	char			*arg_text;//?
+	void			*content;
 	size_t			arg_length;
 	char			sign;
 	char			zero;
@@ -41,7 +43,7 @@ typedef struct	s_printf
 typedef struct	s_args
 {
 	t_printf		*usedin;
-	size_t			arg_type;
+	//size_t			arg_type;
 	struct s_args	*next;
 }				t_args;
 
