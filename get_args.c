@@ -6,7 +6,7 @@
 /*   By: aimelda <aimelda@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/15 20:19:47 by aimelda           #+#    #+#             */
-/*   Updated: 2020/02/15 20:20:58 by aimelda          ###   ########.fr       */
+/*   Updated: 2020/02/16 20:25:17 by aimelda          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,26 +31,26 @@ static void		get_long_long(t_printf *cur, va_list ap)
 	cur->content = malloc(sizeof(long long));
 	if (!(cur->arg_type % 'h' % 'h'))
 	{
-		*(long long*)cur->content = va_arg(ap, char);
-		cur->arg_type /= 'h' / 'h';
+		*(long long*)cur->content = (long long)va_arg(ap, char);
+		cur->arg_type = cur->arg_type / 'h' / 'h';
 	}
 	else if (!(cur->arg_type % 'h'))
 	{
-		*(long long*)cur->content = va_arg(ap, short);
+		*(long long*)cur->content = (long long)va_arg(ap, short);
 		cur->arg_type /= 'h';
 	}
 	else if (!(cur->arg_type % 'l' % 'l'))
 	{
 		*(long long*)cur->content = va_arg(ap, long long);
-		cur->arg_type /= 'l' / 'l';
+		cur->arg_type = cur->arg_type / 'l' / 'l';
 	}
 	else if (!(cur->arg_type % 'l'))
 	{
-		*(long long*)cur->content = va_arg(ap, long);
+		*(long long*)cur->content = (long long)va_arg(ap, long);
 		cur->arg_type /= 'l';
 	}
 	else
-		*(long long*)cur->content = va_arg(ap, int);
+		*(long long*)cur->content = (long long)va_arg(ap, int);
 }
 
 static void		get_long_double(t_printf *cur, va_list ap)
@@ -58,7 +58,7 @@ static void		get_long_double(t_printf *cur, va_list ap)
 	cur->content = malloc(sizeof(long double));
 	if (!(cur->arg_type % 'l'))
 	{
-		*(long double*)cur->content = va_arg(ap, double);
+		*(long double*)cur->content = (long double)va_arg(ap, double);
 		cur->arg_type /= 'l';
 	}
 	else if (!(cur->arg_type % 'L'))
@@ -67,7 +67,7 @@ static void		get_long_double(t_printf *cur, va_list ap)
 		cur->arg_type /= 'L';
 	}
 	else
-		*(long double*)cur->content = va_arg(ap, double);
+		*(long double*)cur->content = (long double)va_arg(ap, double);
 }
 
 static void		get_precision_or_width(t_printf *cur, va_list ap, int i)

@@ -6,7 +6,7 @@
 /*   By: aimelda <aimelda@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 19:26:23 by aimelda           #+#    #+#             */
-/*   Updated: 2020/02/15 22:42:33 by aimelda          ###   ########.fr       */
+/*   Updated: 2020/02/16 19:37:32 by aimelda          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,11 +106,13 @@ static void		get_width(char **str, t_printf *cur, t_args **args)
 void			ft_printf_parsing(char **format, t_printf *cur, t_args **args)
 {
 	while ((*format)++)
-		if (ft_isdigit(**format))
+		if (**format >= '1' && **format <= '9')
 			arg_or_width(format, cur, args);
-		else if ((**format == '+' || **format == ' ') && cur->sign != '+')
-			cur->sign = **format;
-		else if (**format == '0' && !cur->left_adjusted)
+		else if (**format == '+')
+			cur->sign = '+';
+		else if (**format == ' ')
+			cur->space = ' ';
+		else if (**format == '0')
 			cur->zero = '0';
 		else if (**format == '#')
 			cur->sharp = 1;
@@ -122,13 +124,12 @@ void			ft_printf_parsing(char **format, t_printf *cur, t_args **args)
 			get_width(format, cur, args);
 		else
 			break;
-	/*if (!cur->arg_number)//NOT NEED
-	{
-		cur->arg_number = ++(args[0]->arg_type);
-		arg_malloc(args, cur, args[0]->arg_type);
-	}*/
 	while (ft_strchr(PRINTF_FLAGS, **format))
 		cur->arg_type *= *((*format)++);
 	if (ft_strchr(CONVERSION_SPECIFIERS, **format))
 		cur->arg_type *= **format;
+	if (cur->left_adjusted && cur->zero == '0')
+		cur->zero = ' ';
+	if (!cur->sign)
+		cur->sign = cur->space;
 }

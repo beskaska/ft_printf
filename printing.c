@@ -6,7 +6,7 @@
 /*   By: aimelda <aimelda@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/08 16:30:25 by aimelda           #+#    #+#             */
-/*   Updated: 2020/02/15 20:59:12 by aimelda          ###   ########.fr       */
+/*   Updated: 2020/02/16 20:33:50 by aimelda          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,22 @@ static t_printf	*free_printf(t_printf *to_del)
 	return (tmp);
 }
 
-static void		converting(t_printf *cur)
+static int		converting(t_printf *cur)
 {
-	if (cur->arg_type == 'd' || cur->arg_type == 'i' || cur->arg_type == 'o'
-	|| cur->arg_type == 'u' || cur->arg_type == 'x' || cur->arg_type == 'X')
-		to_diouxX(cur);
+	if (cur->arg_type == 'd' || cur->arg_type == 'i')
+		return (to_signed_dec(*(long long*)cur->content, cur, 10));
+	else if (cur->arg_type == 'o')
+		return (to_unsigned_num(*(unsigned long long*)cur->content, cur, 8));
+	else if (cur->arg_type == 'u')
+		return (to_unsigned_num(*(unsigned long long*)cur->content, cur, 10));
+	else if (cur->arg_type == 'x' || cur->arg_type == 'X')
+	{
+		return (to_unsigned_hex(*(unsigned long long*)cur->content, cur, 16));
+		free(cur->content); //look not good
+	}
+	else
+		return (to_csp(cur));
+	return (1);
 }
 
 int				ft_printf_print(t_printf *cur)
@@ -39,12 +50,7 @@ int				ft_printf_print(t_printf *cur)
 		while (cur->text_length--)
 			ft_putchar(*cur->text++);
 		if (cur->content)
-		{
-			//converting;
-			ft_putstr(cur->arg_text);
-			sum += cur->arg_length;
-			free(cur->arg_text);
-		}
+			sum += converting(cur);
 		cur = free_printf(cur);
 	}
 	return (sum);

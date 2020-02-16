@@ -6,7 +6,7 @@
 /*   By: aimelda <aimelda@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/23 21:58:49 by aimelda           #+#    #+#             */
-/*   Updated: 2020/02/15 20:34:19 by aimelda          ###   ########.fr       */
+/*   Updated: 2020/02/16 19:53:12 by aimelda          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,17 +19,17 @@
 
 # include <stdarg.h>
 # include "libft/libft.h"
+# include <stdio.h> //DEL
 
 typedef struct	s_printf
 {
 	char			*text;
 	size_t			text_length;
-	//size_t			arg_number;
 	size_t			arg_type;
-	char			*arg_text;//?
 	void			*content;
 	size_t			arg_length;
 	char			sign;
+	char			space;
 	char			zero;
 	char			sharp;
 	char			left_adjusted;
@@ -43,7 +43,6 @@ typedef struct	s_printf
 typedef struct	s_args
 {
 	t_printf		*usedin;
-	//size_t			arg_type;
 	struct s_args	*next;
 }				t_args;
 
@@ -51,8 +50,10 @@ int				ft_printf(const char *format, ...);
 void			ft_printf_parsing(char **format, t_printf *cur, t_args **args);
 void			ft_printf_get_args(t_args **args, va_list ap);
 int				ft_printf_print(t_printf *cur);
-void			to_diouxX(t_printf *cur);
-void			to_csp(t_args *arg, va_list ap);
+int				to_signed_dec(long long n, t_printf *cur, int base);
+int				to_unsigned_num(unsigned long long n, t_printf *cur, int base);
+int				to_unsigned_hex(unsigned long long n, t_printf *cur, int base);
+int				to_csp(t_printf *cur);
 void			to_feg(t_args *arg, va_list ap);
 
 #endif
