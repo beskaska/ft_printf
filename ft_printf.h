@@ -6,7 +6,7 @@
 /*   By: aimelda <aimelda@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/23 21:58:49 by aimelda           #+#    #+#             */
-/*   Updated: 2020/02/15 13:51:37 by aimelda          ###   ########.fr       */
+/*   Updated: 2020/02/15 20:34:19 by aimelda          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,9 @@ typedef struct	s_args
 
 int				ft_printf(const char *format, ...);
 void			ft_printf_parsing(char **format, t_printf *cur, t_args **args);
-int				ft_printf_print(t_printf *cur, t_args **args, va_list ap);
-void			to_diouxX(t_args *arg, va_list ap);
+void			ft_printf_get_args(t_args **args, va_list ap);
+int				ft_printf_print(t_printf *cur);
+void			to_diouxX(t_printf *cur);
 void			to_csp(t_args *arg, va_list ap);
 void			to_feg(t_args *arg, va_list ap);
 

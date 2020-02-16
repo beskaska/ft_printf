@@ -6,7 +6,7 @@
 /*   By: aimelda <aimelda@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 19:26:23 by aimelda           #+#    #+#             */
-/*   Updated: 2020/02/15 13:12:40 by aimelda          ###   ########.fr       */
+/*   Updated: 2020/02/15 22:42:33 by aimelda          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,9 +108,9 @@ void			ft_printf_parsing(char **format, t_printf *cur, t_args **args)
 	while ((*format)++)
 		if (ft_isdigit(**format))
 			arg_or_width(format, cur, args);
-		else if (**format == '+' || **format == ' ')
+		else if ((**format == '+' || **format == ' ') && cur->sign != '+')
 			cur->sign = **format;
-		else if (**format == '0')
+		else if (**format == '0' && !cur->left_adjusted)
 			cur->zero = '0';
 		else if (**format == '#')
 			cur->sharp = 1;
