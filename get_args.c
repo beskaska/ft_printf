@@ -6,7 +6,7 @@
 /*   By: aimelda <aimelda@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/15 20:19:47 by aimelda           #+#    #+#             */
-/*   Updated: 2020/02/16 20:25:17 by aimelda          ###   ########.fr       */
+/*   Updated: 2020/02/17 22:23:56 by aimelda          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,8 @@ static void		get_long_double(t_printf *cur, va_list ap)
 	}
 	else
 		*(long double*)cur->content = (long double)va_arg(ap, double);
+	if (cur->precision_asterisk == -1)
+		cur->precision = 6;
 }
 
 static void		get_precision_or_width(t_printf *cur, va_list ap, int i)

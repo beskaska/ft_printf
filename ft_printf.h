@@ -6,7 +6,7 @@
 /*   By: aimelda <aimelda@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/23 21:58:49 by aimelda           #+#    #+#             */
-/*   Updated: 2020/02/16 19:53:12 by aimelda          ###   ########.fr       */
+/*   Updated: 2020/02/17 22:03:03 by aimelda          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,6 @@ int				to_signed_dec(long long n, t_printf *cur, int base);
 int				to_unsigned_num(unsigned long long n, t_printf *cur, int base);
 int				to_unsigned_hex(unsigned long long n, t_printf *cur, int base);
 int				to_csp(t_printf *cur);
-void			to_feg(t_args *arg, va_list ap);
+int				to_feg(t_printf *cur);
 
 #endif
