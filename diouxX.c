@@ -6,7 +6,7 @@
 /*   By: aimelda <aimelda@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/08 13:39:29 by aimelda           #+#    #+#             */
-/*   Updated: 2020/02/16 20:34:07 by aimelda          ###   ########.fr       */
+/*   Updated: 2020/02/18 21:20:47 by aimelda          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@ int			to_signed_dec(long long n, t_printf *cur, int base)
 	unsigned long long	nb;
 	int					tmp;
 
+	if (n < 0)
+		cur->sign = '-';
 	nb = n >> (sizeof(long long) * 8 - 1);
 	nb = n + nb ^ nb;
 	len = get_length(nb, base);
