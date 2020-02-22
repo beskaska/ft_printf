@@ -6,7 +6,7 @@
 /*   By: aimelda <aimelda@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 19:26:23 by aimelda           #+#    #+#             */
-/*   Updated: 2020/02/16 19:37:32 by aimelda          ###   ########.fr       */
+/*   Updated: 2020/02/22 23:36:33 by aimelda          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,19 +18,16 @@ static void		arg_malloc(t_args **args, t_printf *cur, int res)
 
 	if (args[res])
 	{
-		tmp = (t_args*)malloc(sizeof(t_args));
+		tmp = (t_args*)malloc(sizeof(t_args));//if NULL
 		tmp->next = args[res];
 		args[res] = tmp;
 	}
 	else
 	{
-		args[res] = (t_args*)malloc(sizeof(t_args));
+		args[res] = (t_args*)malloc(sizeof(t_args));//if NULL
 		args[res]->next = NULL;
-		/*if (res > args[0]->arg_type)
-			args[0]->arg_type = res;*/
 	}
 	args[res]->usedin = cur;
-	//args[res]->arg_type = 1;
 }
 
 static void		arg_or_width(char **str, t_printf *cur, t_args **args)
@@ -43,7 +40,7 @@ static void		arg_or_width(char **str, t_printf *cur, t_args **args)
 	if (res && **str == '$') //probably need to handle multiple using of an argument
 	{
 		arg_malloc(args, cur, res);
-		//cur->arg_number = res; //--- here // NOT NEED
+		cur->arg_number = res;
 	}
 	else
 	{
@@ -71,10 +68,7 @@ static void		get_precision(char **str, t_printf *cur, t_args **args)
 			cur->precision_asterisk = res; //--- here
 		}
 		else
-		{
-			//cur->precision_asterisk = ++(args[0]->arg_type); //--- here
 			(*str)--;
-		}
 	else
 	{
 		cur->precision_asterisk = 0;
@@ -97,13 +91,10 @@ static void		get_width(char **str, t_printf *cur, t_args **args)
 		cur->width_asterisk = res; //--- here
 	}
 	else
-	{
-		//cur->width_asterisk = ++(args[0]->arg_type); //--- here
 		(*str)--;
-	}
 }
 
-void			ft_printf_parsing(char **format, t_printf *cur, t_args **args)
+void			ft_printf_parsing(char **format, t_printf *cur, t_args **args, int *max_arg)
 {
 	while ((*format)++)
 		if (**format >= '1' && **format <= '9')
@@ -124,6 +115,8 @@ void			ft_printf_parsing(char **format, t_printf *cur, t_args **args)
 			get_width(format, cur, args);
 		else
 			break;
+	if (!args[cur->arg_number])
+		arg_malloc(args, cur, cur->arg_number);
 	while (ft_strchr(PRINTF_FLAGS, **format))
 		cur->arg_type *= *((*format)++);
 	if (ft_strchr(CONVERSION_SPECIFIERS, **format))

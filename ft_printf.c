@@ -6,7 +6,7 @@
 /*   By: aimelda <aimelda@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/23 21:57:51 by aimelda           #+#    #+#             */
-/*   Updated: 2020/02/16 19:32:27 by aimelda          ###   ########.fr       */
+/*   Updated: 2020/02/22 23:31:17 by aimelda          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,11 @@ static t_printf	*new_node(char *format)
 {
 	t_printf	*tmp;
 
-	tmp = (t_printf*)malloc(sizeof(t_printf));
+	tmp = (t_printf*)malloc(sizeof(t_printf));//if NULL
 	tmp->text = format;
 	tmp->text_length = 0;
 	tmp->arg_type = 1;
 	tmp->content = NULL;
-	tmp->arg_length = 1;
 	tmp->sign = 0;
 	tmp->space = 0;
 	tmp->zero = ' ';
@@ -45,9 +44,10 @@ static void		look_up(char *format, t_printf *cur, t_args **args)
 	while (*format)
 		if (*format == '%')
 		{
-			ft_printf_parsing(&format, cur, args);
+			ft_printf_parsing(&format, cur, args, &max_arg);
 			if (*(++format))
 				cur->next = new_node(format);
+			cur->next->arg_number = cur->arg_number + 1;
 			cur = cur->next;
 		}
 		else
@@ -64,6 +64,7 @@ int		ft_printf(const char *format, ...)
 	t_args		*args[MAX_PRINTF_ARG];
 	
 	head = new_node((char*)format);
+	head->arg_number = 1;
 	look_up((char*)format, head, args);
 	va_start(ap, format);
 	ft_printf_get_args(args, ap);

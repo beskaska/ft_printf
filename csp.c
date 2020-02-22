@@ -6,7 +6,7 @@
 /*   By: aimelda <aimelda@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/12 21:22:45 by aimelda           #+#    #+#             */
-/*   Updated: 2020/02/16 20:30:47 by aimelda          ###   ########.fr       */
+/*   Updated: 2020/02/22 22:53:18 by aimelda          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,10 +50,11 @@ int			to_csp(t_printf *cur)
 		return (to_unsigned_char(cur));
 	else if (cur->arg_type == 's')
 		return (to_str_pointer(cur, cur->content));
-	else
+	else if (cur->arg_type == 'p')
 	{
 		cur->sharp = 1;
 		cur->arg_type = 'x';
 		return (to_unsigned_hex(*(unsigned long long*)cur->content, cur, 16));
 	}
+	return (0);
 }

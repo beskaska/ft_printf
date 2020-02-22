@@ -6,13 +6,13 @@
 /*   By: aimelda <aimelda@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/15 20:19:47 by aimelda           #+#    #+#             */
-/*   Updated: 2020/02/17 22:23:56 by aimelda          ###   ########.fr       */
+/*   Updated: 2020/02/22 23:37:06 by aimelda          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-static void	*free_args(t_args *to_del)
+static void	free_args(t_args *to_del)
 {
 	t_args	*tmp;
 
@@ -28,7 +28,7 @@ static void	*free_args(t_args *to_del)
 
 static void		get_long_long(t_printf *cur, va_list ap)
 {
-	cur->content = malloc(sizeof(long long));
+	cur->content = malloc(sizeof(long long));//if NULL
 	if (!(cur->arg_type % 'h' % 'h'))
 	{
 		*(long long*)cur->content = (long long)va_arg(ap, char);
@@ -55,7 +55,7 @@ static void		get_long_long(t_printf *cur, va_list ap)
 
 static void		get_long_double(t_printf *cur, va_list ap)
 {
-	cur->content = malloc(sizeof(long double));
+	cur->content = malloc(sizeof(long double));//if NULL
 	if (!(cur->arg_type % 'l'))
 	{
 		*(long double*)cur->content = (long double)va_arg(ap, double);
@@ -86,7 +86,7 @@ void			ft_printf_get_args(t_args **args, va_list ap)
 	t_printf	*tmp;
 
 	i = 0;
-	while (++i < MAX_PRINTF_ARG) //check the restriction
+	while (++i < MAX_PRINTF_ARG) //check the restriction | max_arg
 		if (args[i])
 		{
 			tmp = args[i]->usedin;

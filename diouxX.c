@@ -6,7 +6,7 @@
 /*   By: aimelda <aimelda@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/08 13:39:29 by aimelda           #+#    #+#             */
-/*   Updated: 2020/02/18 21:20:47 by aimelda          ###   ########.fr       */
+/*   Updated: 2020/02/22 20:07:05 by aimelda          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static void	get_string(unsigned long long n, int len, int base, char c)
 {
 	char	*res;
 
-	res = (char*)malloc(len + 1);
+	res = (char*)malloc(len + 1); //if NULL
 	res[len] = 0;
 	while (len--)
 	{
