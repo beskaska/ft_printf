@@ -6,7 +6,7 @@
 /*   By: aimelda <aimelda@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/23 21:58:49 by aimelda           #+#    #+#             */
-/*   Updated: 2020/02/22 23:35:02 by aimelda          ###   ########.fr       */
+/*   Updated: 2020/02/23 21:01:56 by aimelda          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int				ft_printf(const char *format, ...);
 void			ft_printf_parsing(char **format, t_printf *cur, t_args **args, int *max_arg);
 void			ft_printf_get_args(t_args **args, va_list ap);
 int				ft_printf_print(t_printf *cur);
-int				to_signed_dec(long long n, t_printf *cur, int base);
+int				to_signed_dec(unsigned long long n, t_printf *cur, int base);
 int				to_unsigned_num(unsigned long long n, t_printf *cur, int base);
 int				to_unsigned_hex(unsigned long long n, t_printf *cur, int base);
 int				to_csp(t_printf *cur);

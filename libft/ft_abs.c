@@ -6,7 +6,7 @@
 /*   By: aimelda <aimelda@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/13 00:35:42 by aimelda           #+#    #+#             */
-/*   Updated: 2020/02/09 12:27:03 by aimelda          ###   ########.fr       */
+/*   Updated: 2020/02/23 20:59:00 by aimelda          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 
 size_t	ft_abs(long long n)
 {
-	if (n < 0)
-		return (n * (-1));
-	return (n);
+	long long	mask;
+
+	mask = n >> (sizeof(long long) * 8 - 1);
+	return (n + mask ^ mask);
 }

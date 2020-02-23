@@ -6,7 +6,7 @@
 /*   By: aimelda <aimelda@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/08 13:39:29 by aimelda           #+#    #+#             */
-/*   Updated: 2020/02/22 20:07:05 by aimelda          ###   ########.fr       */
+/*   Updated: 2020/02/23 21:03:00 by aimelda          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,17 +39,15 @@ static void	get_string(unsigned long long n, int len, int base, char c)
 	free(res);
 }
 
-int			to_signed_dec(long long n, t_printf *cur, int base)
+int			to_signed_dec(unsigned long long n, t_printf *cur, int base)
 {
 	int					len;
-	unsigned long long	nb;
 	int					tmp;
 
 	if (n < 0)
 		cur->sign = '-';
-	nb = n >> (sizeof(long long) * 8 - 1);
-	nb = n + nb ^ nb;
-	len = get_length(nb, base);
+	n = ft_abs(n);
+	len = get_length(n, base);
 	tmp = ft_max(len, cur->precision) + cur->sign > 0;
 	if (!(cur->left_adjusted))
 		while (cur->width > tmp++)
@@ -57,7 +55,7 @@ int			to_signed_dec(long long n, t_printf *cur, int base)
 	ft_putchar(cur->sign);
 	while (cur->precision > len++)
 		ft_putchar('0');
-	get_string(nb, len - 1, base, 0);
+	get_string(n, len - 1, base, 0);
 	if (cur->left_adjusted)
 		while (cur->width > tmp++)
 			ft_putchar(cur->zero);
