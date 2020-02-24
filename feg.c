@@ -6,7 +6,7 @@
 /*   By: aimelda <aimelda@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/13 21:34:49 by aimelda           #+#    #+#             */
-/*   Updated: 2020/02/23 21:37:06 by aimelda          ###   ########.fr       */
+/*   Updated: 2020/02/24 15:07:07 by aimelda          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ static char	*num_to_txt(unsigned long long n)
 
 	txt = ft_strnew(MAX_LLONG_DIGIT);
 	nb = MAX_LLONG_DIGIT - 1;
+
 	while (n)
 	{
 		txt[nb--] = n % 10 + '0';
@@ -108,14 +109,17 @@ static void	put_float(t_printf *cur, char *txt, int len)
 int			to_float(t_printf *cur, long double n)
 {
 	int		len;
-	//int		len_frac;
 	int		tmp;
 	char	*txt;
 
 	if (((char*)cur->content)[9] < 0)
 		cur->sign = '-';
 	txt = get_number(cur, (char*)cur->content, &len);
-	tmp = len + cur->precision + cur->sign > 0 + (cur->precision || cur->sharp); //one char for dec point?
+	tmp = cur->precision + (cur->sign > 0) + (cur->precision || cur->sharp);
+	if (len > 0)
+		tmp += len;
+	else
+		tmp += 1;
 	if (!(cur->left_adjusted))
 		while (cur->width > tmp++)
 			ft_putchar(cur->zero);
