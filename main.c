@@ -6,7 +6,7 @@
 /*   By: aimelda <aimelda@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/25 20:08:41 by aimelda           #+#    #+#             */
-/*   Updated: 2020/02/28 22:18:18 by aimelda          ###   ########.fr       */
+/*   Updated: 2020/02/28 23:44:46 by aimelda          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,10 @@ int		main()
 	char *p = "yes";
 	int ans1, ans2;
 	//char	*str = "Test %2$+010x %1$+d %3c %4$-010.5s %6f %5$.3g %4$15.20p %1$#.3x!\n";
-	char *str = "Test %+.20000Lf!\n";
+	char *str = "Test %+.100Lf!\n";
 
-	ans1 = printf(str, LDBL_MIN);
-	ans2 = ft_printf(str, LDBL_MIN);
+	ans1 = printf(str, LDBL_MAX	);
+	ans2 = ft_printf(str, LDBL_MAX);
 	printf("%d vs. %d\n", ans1, ans2);
 	//printf("%lu\n", sizeof(double));
 }

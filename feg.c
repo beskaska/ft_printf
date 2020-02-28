@@ -6,7 +6,7 @@
 /*   By: aimelda <aimelda@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/13 21:34:49 by aimelda           #+#    #+#             */
-/*   Updated: 2020/02/28 22:14:46 by aimelda          ###   ########.fr       */
+/*   Updated: 2020/02/29 00:17:52 by aimelda          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,12 @@ static char	*num_to_txt(unsigned long long n, int exp, int *len)
 	*len = MAX_LLONG_DIGIT;
 	if (n < 10000000000000000000UL)
 		--(*len);
-	txt = ft_strnew(*len + ft_abs(exp));//just malloc?
-	nb = *len - 1;
+	txt = (char*)malloc(*len + ft_abs(exp) + 1);
+	if (exp > 0)
+		nb = *len + ft_abs(exp);
+	else
+		nb = *len;
+	txt[nb--] = '\0';
 	while (n)
 	{
 		txt[nb--] = n % 10 + '0';
@@ -30,7 +34,7 @@ static char	*num_to_txt(unsigned long long n, int exp, int *len)
 	return (txt);
 }
 
-static char	*multiply(char *num, int *len, int exp)
+static char	*divide(char *num, int *len, int exp)
 {
 	int		i;
 	int 	offset;
@@ -39,7 +43,7 @@ static char	*multiply(char *num, int *len, int exp)
 
 	offset = *len;
 	if (exp < 0)
-		while (exp++)//optimize by comparing the precision and len
+		while (exp++)//optimize by division 2^64
 		{
 			i = offset - *len;
 			oida = 0;
@@ -56,9 +60,46 @@ static char	*multiply(char *num, int *len, int exp)
 			if (num[offset - *len] == '0')
 				--(*len);
 			if (oida)
+			{
 				num[i] = '5';
+				num[i + 1] = '\0';
+			}
 		}
 	return (num + offset - *len);
+}
+
+static char *multiply(char *num, int *len, int exp)
+{
+	unsigned long long	b;
+	unsigned long long	oida;
+	int					i;
+
+	b = 256UL * 256 * 256 * 16;//determine and define
+	oida = 0;
+	num = num + exp;
+	while (exp)//determine and define
+	{
+		exp -= 28;
+		while (exp < 0)
+		{
+			exp++;
+			b /= 2;
+		}
+		i = *len;
+		while (i--)
+		{
+			oida += (num[i] - '0') * b;
+			num[i] = oida % 10 + '0';
+			oida /= 10;
+		}
+		while (oida)
+		{
+			++(*len);
+			*(--num) = oida % 10 + '0';
+			oida /= 10;
+		}
+	}
+	return (num);
 }
 
 static char	*get_number(char *txt, int *tmp, int *len)//*cur not used
@@ -111,7 +152,10 @@ int			to_float(t_printf *cur, long double n)
 	if (((char*)cur->content)[9] < 0)
 		cur->sign = '-';
 	txt = get_number((char*)cur->content, &tmp, &len);
-	index = multiply(txt, &len, tmp);
+	if (tmp > 0)
+		index = multiply(txt, &len, tmp);
+	else
+		index = divide(txt, &len, tmp);
 	tmp = cur->precision + (cur->sign > 0) + (cur->precision || cur->sharp);
 	if (len > 0)
 		tmp += len;
