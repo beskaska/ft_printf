@@ -6,20 +6,25 @@
 /*   By: aimelda <aimelda@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/13 21:34:49 by aimelda           #+#    #+#             */
-/*   Updated: 2020/02/24 15:07:07 by aimelda          ###   ########.fr       */
+/*   Updated: 2020/02/26 23:22:09 by aimelda          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-static char	*num_to_txt(unsigned long long n)
+static char	*num_to_txt(unsigned long long n, int exp)
 {
-	int		nb;//int
+	int		nb;
 	char	*txt;
 
-	txt = ft_strnew(MAX_LLONG_DIGIT);
+	if (n % 10 == 2 || n % 10 == 6)
+		--exp;
+	else if (n % 10 == 4)
+		exp -= 2;
+	else if (n % 10 == 8)
+		exp -= 3;
+	txt = ft_strnew(MAX_LLONG_DIGIT + ft_abs(exp));//just malloc?
 	nb = MAX_LLONG_DIGIT - 1;
-
 	while (n)
 	{
 		txt[nb--] = n % 10 + '0';
@@ -30,51 +35,43 @@ static char	*num_to_txt(unsigned long long n)
 
 static char	*multiply(char *num, int *len, int exp)
 {
-	char	offset;
 	char	i;
 	char	oida;
 	char	tmp;
 
+	*len = MAX_LLONG_DIGIT;
 	if (exp < 0)
 		while (exp++) //optimize by comparing the precision and len
 		{
-			if (num[0] == '1')
-			{
-				offset = 1;
-				--(*len);
-			}
-			else
-				offset = 0;
-			i = 0;
+			i = MAX_LLONG_DIGIT - *len;
 			oida = 0;
-			while (i < MAX_LLONG_DIGIT)
+			while (num[i])
 			{
 				tmp = num[i];
-				if (i >= offset)
-					num[i - offset] = (num[i] - '0') / 2 + oida + '0';
+				num[i] = (num[i] - '0') / 2 + oida + '0';
 				if (tmp % 2)
 					oida = 5;
 				else
 					oida = 0;
 				i++;
 			}
-
+			if (num[MAX_LLONG_DIGIT - *len] == '0')
+				--(*len);
+			if (oida)
+				num[i] = '5';
 		}
-	return (num);
+	return (num + MAX_LLONG_DIGIT - *len);
 }
 
-static char	*get_number(t_printf *cur, char *txt, int *len)
+static char	*get_number(char *txt, int *tmp)//*cur not used
 {
-	char	*num_txt;
 	short	exp;
 
 	//if special values: +0; -0; NaN; +infinity; -infinity
 	if ((exp = *(short*)(txt + 8)) < 0)
 		exp = exp ^ (short)-32768;
-	exp -= 16383 + sizeof(long long) * 8 - 1;
-	num_txt = num_to_txt(*(unsigned long long*)(txt));
-	*len = MAX_LLONG_DIGIT; //maybe should init in main function
-	return (multiply(num_txt, len, exp));
+	*tmp = exp - 16383 - (sizeof(long long) * 8 - 1);
+	return (num_to_txt(*(unsigned long long*)(txt), *tmp));
 }
 
 static void	put_float(t_printf *cur, char *txt, int len)
@@ -111,10 +108,12 @@ int			to_float(t_printf *cur, long double n)
 	int		len;
 	int		tmp;
 	char	*txt;
+	char	*index;
 
 	if (((char*)cur->content)[9] < 0)
 		cur->sign = '-';
-	txt = get_number(cur, (char*)cur->content, &len);
+	txt = get_number((char*)cur->content, &tmp);
+	index = multiply(txt, &len, tmp);
 	tmp = cur->precision + (cur->sign > 0) + (cur->precision || cur->sharp);
 	if (len > 0)
 		tmp += len;
@@ -124,7 +123,7 @@ int			to_float(t_printf *cur, long double n)
 		while (cur->width > tmp++)
 			ft_putchar(cur->zero);
 	ft_putchar(cur->sign);
-	put_float(cur, txt, len);
+	put_float(cur, index, len);
 	if (cur->left_adjusted)
 		while (cur->width > tmp++)
 			ft_putchar(cur->zero);
