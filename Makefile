@@ -6,13 +6,15 @@
 #    By: aimelda <aimelda@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/09/06 21:18:08 by aimelda           #+#    #+#              #
-#    Updated: 2020/02/22 21:34:10 by aimelda          ###   ########.fr        #
+#    Updated: 2020/02/29 12:08:00 by aimelda          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME	=	libftprintf.a
 
 HDR		=	ft_printf.h
+
+LIB		=	libft/libft.a
 
 SRC		=	ft_printf.c			\
 			parsing.c			\
@@ -31,7 +33,7 @@ all: $(NAME)
 $(NAME): $(SRC) $(HDR)
 	make -C libft/
 	gcc -g -I$(HDR) -c $?
-	ar rc $@ $(NEW_OBJ)
+	ar rc $@ $(NEW_OBJ) libft/*.o
 	ranlib $@
 
 clean:

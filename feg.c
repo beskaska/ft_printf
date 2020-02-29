@@ -6,7 +6,7 @@
 /*   By: aimelda <aimelda@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/13 21:34:49 by aimelda           #+#    #+#             */
-/*   Updated: 2020/02/29 00:17:52 by aimelda          ###   ########.fr       */
+/*   Updated: 2020/02/29 16:07:32 by aimelda          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,39 +34,105 @@ static char	*num_to_txt(unsigned long long n, int exp, int *len)
 	return (txt);
 }
 
-static char	*divide(char *num, int *len, int exp)
+static void	rounding(char **num, int start, int *len)
+{
+	char	flag;
+	int		i;
+
+	i = start;
+	flag = 0;
+	if ((*num)[i] - '0' > 5)
+		flag = 1;
+	else if ((*num)[i] - '0' == 5)
+		while ((*num)[++i])
+			if ((*num)[i] > '0')
+			{
+				flag = 1;
+				break;
+			}
+	if (flag)
+	{
+		while ((*num)[--start] - '0' + 1 == 10)
+			(*num)[start] = '0';
+		(*num)[start] = (*num)[start] - '0' + 1 + '0';
+		if (start < 0)
+		{
+			++(*len);
+			--(*num);
+		}
+	}
+}
+
+static char	*divide(char *num, int *len, int exp, int precision)
 {
 	int		i;
-	int 	offset;
 	char	oida;
 	char	tmp;
 
-	offset = *len;
-	if (exp < 0)
-		while (exp++)//optimize by division 2^64
+	while (exp++)//optimize by division 2^64
+	{
+		i = 0;
+		oida = 0;
+		while (num[i])
 		{
-			i = offset - *len;
-			oida = 0;
-			while (num[i])
-			{
-				tmp = num[i];
-				num[i] = (num[i] - '0') / 2 + oida + '0';
-				if (tmp % 2)
-					oida = 5;
-				else
-					oida = 0;
-				i++;
-			}
-			if (num[offset - *len] == '0')
-				--(*len);
-			if (oida)
-			{
-				num[i] = '5';
-				num[i + 1] = '\0';
-			}
+			tmp = num[i];
+			num[i] = (num[i] - '0') / 2 + oida + '0';
+			if (tmp % 2)
+				oida = 5;
+			else
+				oida = 0;
+			i++;
 		}
-	return (num + offset - *len);
+		if (oida)
+		{
+			num[i] = '5';
+			num[i + 1] = '\0';
+		}
+		if (num[0] == '0')
+		{
+			--(*len);
+			num++;
+		}
+	}
+	if (i - (oida == 0) - *len > precision && precision + len >= 0)
+		rounding(&num, precision + *len, len);
+	return (num);
 }
+
+/*static char	*divide(char *num, int *len, int exp)
+{
+	unsigned long long	b;
+	unsigned long long	oida;
+	int					i;
+
+	b = 256UL * 256 * 256 * 16;
+	oida = 0;
+	while (exp)
+	{
+		exp += 28;
+		while (exp > 0)
+		{
+			exp--;
+			b /= 2;
+		}
+		i = 0;
+		while (num[i] || oida)
+		{
+			if (!num[i])
+				num[i + 1] = '\0';
+			num[i] = (oida += num[i] - '0') / b + '0';
+			printf("%c\n", num[i]);
+			oida = (oida - (num[i++] - '0') * b) * 10;
+			if (num[0] == '0')
+			{
+				--(*len);
+				num++;
+				i--;
+			}		
+		}
+	}
+	return (num);
+}*/
 
 static char *multiply(char *num, int *len, int exp)
 {
@@ -76,7 +142,6 @@ static char *multiply(char *num, int *len, int exp)
 
 	b = 256UL * 256 * 256 * 16;//determine and define
 	oida = 0;
-	num = num + exp;
 	while (exp)//determine and define
 	{
 		exp -= 28;
@@ -153,9 +218,9 @@ int			to_float(t_printf *cur, long double n)
 		cur->sign = '-';
 	txt = get_number((char*)cur->content, &tmp, &len);
 	if (tmp > 0)
-		index = multiply(txt, &len, tmp);
+		index = multiply(txt + tmp, &len, tmp);
 	else
-		index = divide(txt, &len, tmp);
+		index = divide(txt, &len, tmp, cur->precision);
 	tmp = cur->precision + (cur->sign > 0) + (cur->precision || cur->sharp);
 	if (len > 0)
 		tmp += len;

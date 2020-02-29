@@ -6,7 +6,7 @@
 /*   By: aimelda <aimelda@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/08 13:39:29 by aimelda           #+#    #+#             */
-/*   Updated: 2020/02/23 21:03:00 by aimelda          ###   ########.fr       */
+/*   Updated: 2020/02/29 11:33:24 by aimelda          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,9 @@ int			to_signed_dec(unsigned long long n, t_printf *cur, int base)
 	int					len;
 	int					tmp;
 
-	if (n < 0)
+	if ((long long)n < 0)
 		cur->sign = '-';
-	n = ft_abs(n);
+	n = ft_abs((long long)n);
 	len = get_length(n, base);
 	tmp = ft_max(len, cur->precision) + cur->sign > 0;
 	if (!(cur->left_adjusted))
