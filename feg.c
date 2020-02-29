@@ -6,7 +6,7 @@
 /*   By: aimelda <aimelda@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/13 21:34:49 by aimelda           #+#    #+#             */
-/*   Updated: 2020/02/29 18:45:12 by aimelda          ###   ########.fr       */
+/*   Updated: 2020/02/29 23:29:30 by aimelda          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static char	*num_to_txt(unsigned long long n, int exp, int *len)
 	char	*txt;
 
 	*len = MAX_LLONG_DIGIT;
-	if (*(unsigned long long*)(txt) < 10000000000000000000UL)
+	if (n < 10000000000000000000UL)
 		--(*len);
 	txt = (char*)malloc(*len + ft_abs(exp) + 1);
 	if (exp > 0)
@@ -199,6 +199,7 @@ static char	*get_number(t_printf *cur, char *txt, int *exp, int *len)
 
 static void	put_float(t_printf *cur, char *txt, int len)
 {
+	//ft_putchar(*(txt - 1));//???
 	if (len > 0)
 	{
 		while (len && *txt)
@@ -233,6 +234,7 @@ int			to_float(t_printf *cur, long double n)
 	char	*txt;
 	char	*index;
 
+	printf("");
 	if (((char*)cur->content)[9] < 0)
 		cur->sign = '-';
 	txt = get_number(cur, (char*)cur->content, &tmp, &len);

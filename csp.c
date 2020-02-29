@@ -6,7 +6,7 @@
 /*   By: aimelda <aimelda@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/12 21:22:45 by aimelda           #+#    #+#             */
-/*   Updated: 2020/02/29 19:12:10 by aimelda          ###   ########.fr       */
+/*   Updated: 2020/02/29 21:58:23 by aimelda          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static int	to_str_pointer(t_printf *cur, char *str)
 {
 	int		len;
 
-	printf("%c\n", cur->content);
+	//printf("%c\n", cur->content);
 	len = ft_strlen(cur->content);
 	if (!(cur->left_adjusted))
 		while (cur->width > len++)
@@ -47,7 +47,7 @@ static int	to_str_pointer(t_printf *cur, char *str)
 
 int			to_csp(t_printf *cur)
 {
-	printf("\n%c\n", cur->arg_type);
+	//printf("\n%c\n", cur->arg_type);
 	if (cur->arg_type == 'c')
 		return (to_unsigned_char(cur));
 	else if (cur->arg_type == 's')
