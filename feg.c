@@ -6,7 +6,7 @@
 /*   By: aimelda <aimelda@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/13 21:34:49 by aimelda           #+#    #+#             */
-/*   Updated: 2020/02/29 16:07:32 by aimelda          ###   ########.fr       */
+/*   Updated: 2020/02/29 18:45:12 by aimelda          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static char	*num_to_txt(unsigned long long n, int exp, int *len)
 	char	*txt;
 
 	*len = MAX_LLONG_DIGIT;
-	if (n < 10000000000000000000UL)
+	if (*(unsigned long long*)(txt) < 10000000000000000000UL)
 		--(*len);
 	txt = (char*)malloc(*len + ft_abs(exp) + 1);
 	if (exp > 0)
@@ -167,15 +167,34 @@ static char *multiply(char *num, int *len, int exp)
 	return (num);
 }
 
-static char	*get_number(char *txt, int *tmp, int *len)//*cur not used
+static char	*get_number(t_printf *cur, char *txt, int *exp, int *len)
 {
-	short	exp;
-
-	//if special values: +0; -0; NaN; +infinity; -infinity
-	if ((exp = *(short*)(txt + 8)) < 0)
-		exp = exp ^ (short)-32768;
-	*tmp = exp - EXPONENT_BIAS - (sizeof(long long) * 8 - 1);
-	return (num_to_txt(*(unsigned long long*)(txt), *tmp, len));
+	if ((*exp = *(short*)(txt + 8)) < 0)
+		*exp = (short)*exp ^ (short)-32768;
+	if (*exp == 32767)
+	{
+		*len = 3;
+		*exp = 0;
+		if (*(unsigned long long*)(txt) == MAX_ULLONG)
+			txt = ft_strdup("inf");
+		else
+		{
+			txt = ft_strdup("nan");
+			cur->sign = 0;
+		}
+		cur->zero = ' ';
+		cur->sharp = 0;
+		cur->precision = 0;
+		return (txt);
+	}
+	else if (!*exp && !(*(unsigned long long*)(txt)))
+	{
+		*len = 1;
+		return (txt = ft_strdup("0"));
+	}
+	else
+		*exp = *exp - EXPONENT_BIAS - (sizeof(long long) * 8 - 1);
+	return (num_to_txt(*(unsigned long long*)(txt), *exp, len));
 }
 
 static void	put_float(t_printf *cur, char *txt, int len)
@@ -216,8 +235,8 @@ int			to_float(t_printf *cur, long double n)
 
 	if (((char*)cur->content)[9] < 0)
 		cur->sign = '-';
-	txt = get_number((char*)cur->content, &tmp, &len);
-	if (tmp > 0)
+	txt = get_number(cur, (char*)cur->content, &tmp, &len);
+	if (tmp >= 0)
 		index = multiply(txt + tmp, &len, tmp);
 	else
 		index = divide(txt, &len, tmp, cur->precision);

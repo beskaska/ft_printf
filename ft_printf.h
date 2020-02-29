@@ -6,7 +6,7 @@
 /*   By: aimelda <aimelda@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/23 21:58:49 by aimelda           #+#    #+#             */
-/*   Updated: 2020/02/28 22:02:12 by aimelda          ###   ########.fr       */
+/*   Updated: 2020/02/29 18:45:49 by aimelda          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # define MAX_PRINTF_ARG 190
 # define MAX_LLONG_DIGIT 20
 # define EXPONENT_BIAS 16383
+# define MAX_ULLONG 9223372036854775808L
 # define CONVERSION_SPECIFIERS "diouxXcspfeg"
 # define PRINTF_FLAGS "hlL"
 
@@ -31,7 +32,6 @@ typedef struct	s_printf
 	void			*content;
 	int				arg_number;
 	char			sign;
-	char			space;
 	char			zero;
 	char			sharp;
 	char			left_adjusted;

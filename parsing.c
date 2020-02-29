@@ -6,7 +6,7 @@
 /*   By: aimelda <aimelda@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 19:26:23 by aimelda           #+#    #+#             */
-/*   Updated: 2020/02/22 23:36:33 by aimelda          ###   ########.fr       */
+/*   Updated: 2020/02/29 18:23:59 by aimelda          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,10 @@ void			ft_printf_parsing(char **format, t_printf *cur, t_args **args, int *max_a
 		else if (**format == '+')
 			cur->sign = '+';
 		else if (**format == ' ')
-			cur->space = ' ';
+		{
+			if (!cur->sign)
+				cur->sign = ' ';
+		}
 		else if (**format == '0')
 			cur->zero = '0';
 		else if (**format == '#')
@@ -123,6 +126,4 @@ void			ft_printf_parsing(char **format, t_printf *cur, t_args **args, int *max_a
 		cur->arg_type *= **format;
 	if (cur->left_adjusted && cur->zero == '0')
 		cur->zero = ' ';
-	if (!cur->sign)
-		cur->sign = cur->space;
 }
