@@ -6,7 +6,7 @@
 /*   By: aimelda <aimelda@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/23 21:57:51 by aimelda           #+#    #+#             */
-/*   Updated: 2020/02/29 17:24:01 by aimelda          ###   ########.fr       */
+/*   Updated: 2020/03/01 17:09:35 by aimelda          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,13 @@ static void		look_up(char *format, t_printf *cur, t_args **args)
 	while (*format)
 		if (*format == '%')
 		{
-			ft_printf_parsing(&format, cur, args, &max_arg);
+			if (*(format + 1))
+				ft_printf_parsing(&format, cur, args, &max_arg);
 			if (*(++format))
+			{
 				cur->next = new_node(format);
-			cur->next->arg_number = cur->arg_number + 1;
+				cur->next->arg_number = cur->arg_number + 1;
+			}
 			cur = cur->next;
 		}
 		else

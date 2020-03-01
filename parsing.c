@@ -6,7 +6,7 @@
 /*   By: aimelda <aimelda@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 19:26:23 by aimelda           #+#    #+#             */
-/*   Updated: 2020/02/29 18:23:59 by aimelda          ###   ########.fr       */
+/*   Updated: 2020/03/01 17:38:11 by aimelda          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,13 +68,17 @@ static void		get_precision(char **str, t_printf *cur, t_args **args)
 			cur->precision_asterisk = res; //--- here
 		}
 		else
-			(*str)--;
+			--(*str);
 	else
 	{
 		cur->precision_asterisk = 0;
 		if (c != '-')
+		{
 			cur->precision = res;
-		(*str)--;
+			if (c)
+				--(*str);
+		}
+		--(*str);
 	}
 }
 
@@ -118,12 +122,18 @@ void			ft_printf_parsing(char **format, t_printf *cur, t_args **args, int *max_a
 			get_width(format, cur, args);
 		else
 			break;
-	if (!args[cur->arg_number])
-		arg_malloc(args, cur, cur->arg_number);
+	if (cur->left_adjusted && cur->zero == '0')
+		cur->zero = ' ';
 	while (ft_strchr(PRINTF_FLAGS, **format))
 		cur->arg_type *= *((*format)++);
 	if (ft_strchr(CONVERSION_SPECIFIERS, **format))
+	{
 		cur->arg_type *= **format;
-	if (cur->left_adjusted && cur->zero == '0')
-		cur->zero = ' ';
+		if (!args[cur->arg_number])
+			arg_malloc(args, cur, cur->arg_number);
+	}
+	else if (**format == '%')
+		cur->content = (void*)'%';
+	else
+		--(*format);
 }

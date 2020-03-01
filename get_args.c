@@ -6,7 +6,7 @@
 /*   By: aimelda <aimelda@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/15 20:19:47 by aimelda           #+#    #+#             */
-/*   Updated: 2020/02/29 22:04:08 by aimelda          ###   ########.fr       */
+/*   Updated: 2020/03/01 20:23:13 by aimelda          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static void	free_args(t_args *to_del)
 static void		get_long_long(t_printf *cur, va_list ap)
 {
 	cur->content = malloc(sizeof(long long));//if NULL
-	if (!(cur->arg_type % 'h' % 'h'))
+	if (!(cur->arg_type % ('h' * 'h')))
 	{
 		*(long long*)cur->content = va_arg(ap, char);
 		cur->arg_type = cur->arg_type / 'h' / 'h';
@@ -39,7 +39,7 @@ static void		get_long_long(t_printf *cur, va_list ap)
 		*(long long*)cur->content = (int)va_arg(ap, short);
 		cur->arg_type /= 'h';
 	}
-	else if (!(cur->arg_type % 'l' % 'l'))
+	else if (!(cur->arg_type % ('l' * 'l')))
 	{
 		*(long long*)cur->content = va_arg(ap, long long);
 		cur->arg_type = cur->arg_type / 'l' / 'l';
@@ -99,7 +99,10 @@ void			ft_printf_get_args(t_args **args, va_list ap)
 			|| !(tmp->arg_type % 'g'))
 				get_long_double(tmp, ap);
 			else if (!(tmp->arg_type % 's') || !(tmp->arg_type % 'p'))
-				tmp->content = va_arg(ap, void*);
+			{
+				if (!(tmp->content = va_arg(ap, void*)))
+					tmp->content = ft_strdup("(null)");
+			}
 			else if (tmp->arg_type == 1)
 				get_precision_or_width(tmp, ap, i);
 			free_args(args[i]);
