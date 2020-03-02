@@ -6,7 +6,7 @@
 /*   By: aimelda <aimelda@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/08 13:39:29 by aimelda           #+#    #+#             */
-/*   Updated: 2020/03/01 20:13:32 by aimelda          ###   ########.fr       */
+/*   Updated: 2020/03/02 22:42:29 by aimelda          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,10 @@ int			to_signed_dec(t_printf *cur, int base)
 	len = get_length(cur, base);
 	tmp = ft_max(len, cur->precision) + (cur->sign > 0);
 	if (cur->zero == '0')
+	{
 		ft_putchar(cur->sign);
+		printf("!\n");
+	}
 	if (!(cur->left_adjusted))
 		while (cur->width > tmp++)
 			ft_putchar(cur->zero);

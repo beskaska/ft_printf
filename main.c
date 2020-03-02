@@ -6,7 +6,7 @@
 /*   By: aimelda <aimelda@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/25 20:08:41 by aimelda           #+#    #+#             */
-/*   Updated: 2020/03/01 20:34:12 by aimelda          ###   ########.fr       */
+/*   Updated: 2020/03/02 22:01:30 by aimelda          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,8 @@ int		main()
 
 	//ans1 = printf(str, d, ans2, c, p, gg);
 	//ans2 = ft_printf(str, d, ans2, c, p, gg);
-	ans1 = printf("%u\n", 4294967295);
-	ans2 = ft_printf("%u\n", 4294967295);
+	
+	ans2 = ft_printf("%.2c\n", NULL);
+	ans1 = printf("%.2c\n", NULL);
 	printf("%d vs. %d\n", ans1, ans2);
 }
