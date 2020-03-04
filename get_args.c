@@ -6,7 +6,7 @@
 /*   By: aimelda <aimelda@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/15 20:19:47 by aimelda           #+#    #+#             */
-/*   Updated: 2020/03/02 22:40:38 by aimelda          ###   ########.fr       */
+/*   Updated: 2020/03/04 07:20:18 by aimelda          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,17 +32,21 @@ static void		get_long_long(t_printf *cur, va_list ap)
 	if (!(cur->arg_type % ('h' * 'h')))
 	{
 		*(long long*)cur->content = va_arg(ap, char);
-		cur->arg_type = cur->arg_type / 'h' / 'h';
+		cur->arg_type /=  'h' * 'h';
+		if (cur->arg_type != 'd' && cur->arg_type != 'i')
+			*(long long*)cur->content &= 255;
 	}
 	else if (!(cur->arg_type % 'h'))
 	{
 		*(long long*)cur->content = (int)va_arg(ap, short);
 		cur->arg_type /= 'h';
+		if (cur->arg_type != 'd' && cur->arg_type != 'i')
+			*(long long*)cur->content &= 65535;
 	}
 	else if (!(cur->arg_type % ('l' * 'l')))
 	{
 		*(long long*)cur->content = va_arg(ap, long long);
-		cur->arg_type = cur->arg_type / 'l' / 'l';
+		cur->arg_type /= 'l' * 'l';
 	}
 	else if (!(cur->arg_type % 'l'))
 	{
@@ -50,7 +54,13 @@ static void		get_long_long(t_printf *cur, va_list ap)
 		cur->arg_type /= 'l';
 	}
 	else
+	{
 		*(long long*)cur->content = va_arg(ap, int);
+		if (cur->arg_type != 'd' && cur->arg_type != 'i')
+			*(long long*)cur->content &= 4294967295;
+	}
+	if (cur->arg_type != 'c' && cur->precision_asterisk > -1)
+		cur->zero = ' ';
 }
 
 static void		get_long_double(t_printf *cur, va_list ap)
