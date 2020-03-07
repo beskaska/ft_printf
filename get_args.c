@@ -6,7 +6,7 @@
 /*   By: aimelda <aimelda@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/15 20:19:47 by aimelda           #+#    #+#             */
-/*   Updated: 2020/03/05 21:44:21 by aimelda          ###   ########.fr       */
+/*   Updated: 2020/03/07 15:48:54 by aimelda          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ static void		get_long_long(t_printf *cur, va_list ap)
 		if (cur->arg_type != 'd' && cur->arg_type != 'i')
 			*(long long*)cur->content &= 4294967295;//!
 	}
-	if (cur->arg_type != 'c' && cur->precision_asterisk > -1)
+	if (cur->arg_type != 'c' && !cur->precision_asterisk)
 		cur->zero = ' ';
 }
 
@@ -82,12 +82,34 @@ static void		get_long_double(t_printf *cur, va_list ap)
 		cur->precision = 6;
 }
 
-static void		get_precision_or_width(t_printf *cur, va_list ap, int i)
+static int		get_precision_or_width(t_printf *cur, va_list ap, int i)
 {
-	if (cur->precision_asterisk == i)
-		cur->precision = va_arg(ap, int);
+	int		tmp;
+
 	if (cur->width_asterisk == i)
-		cur->width = va_arg(ap, int);
+	{
+		if ((tmp = va_arg(ap, int)) < 0)
+		{
+			cur->left_adjusted = 1;
+			cur->zero = ' ';
+			cur->width = ft_abs(tmp);
+		}
+		else if (!cur->width)
+			cur->width = tmp;
+		return (1);
+	}
+	if (cur->precision_asterisk == i)
+	{
+		if ((tmp = va_arg(ap, int)) < 0)
+		{
+			cur->precision = 0;
+			cur->precision_asterisk = -1;
+		}
+		else if (!cur->precision)
+			cur->precision = tmp;
+		return (1);
+	}
+	return (0);
 }
 
 void			ft_printf_get_args(t_args **args, va_list ap)
@@ -100,6 +122,13 @@ void			ft_printf_get_args(t_args **args, va_list ap)
 		if (args[i])
 		{
 			tmp = args[i]->usedin;
+			if (get_precision_or_width(tmp, ap, i))
+				continue;
+			if (tmp->arg_type == 'p')
+			{
+				tmp->arg_type = 'l' * 'l' * 'x';
+				tmp->sharp = -1;
+			}
 			if (!(tmp->arg_type % 'd') || !(tmp->arg_type % 'i') ||
 			!(tmp->arg_type % 'o') || !(tmp->arg_type % 'u') ||
 			!(tmp->arg_type % 'x') || !(tmp->arg_type % 'X') ||
@@ -108,9 +137,7 @@ void			ft_printf_get_args(t_args **args, va_list ap)
 			else if (!(tmp->arg_type % 'f') || !(tmp->arg_type % 'e')
 			|| !(tmp->arg_type % 'g'))
 				get_long_double(tmp, ap);
-			else if (tmp->arg_type == 1)
-				get_precision_or_width(tmp, ap, i);
-			else if (!(tmp->arg_type % 's') || !(tmp->arg_type % 'p'))
+			else if (!(tmp->arg_type % 's'))
 				if (!(tmp->content = va_arg(ap, void*)))
 					tmp->content = ft_strdup("(null)");
 			free_args(args[i]);

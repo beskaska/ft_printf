@@ -6,7 +6,7 @@
 /*   By: aimelda <aimelda@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 19:26:23 by aimelda           #+#    #+#             */
-/*   Updated: 2020/03/05 21:29:14 by aimelda          ###   ########.fr       */
+/*   Updated: 2020/03/07 14:58:08 by aimelda          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,12 @@ static void		get_precision(char **str, t_printf *cur, t_args **args)
 			cur->precision_asterisk = res; //--- here
 		}
 		else
+		{
 			--(*str);
+			cur->precision = res;
+			cur->precision_asterisk = cur->arg_number;
+			arg_malloc(args, cur, cur->arg_number++);
+		}
 	else
 	{
 		cur->precision_asterisk = 0;
@@ -85,8 +90,10 @@ static void		get_precision(char **str, t_printf *cur, t_args **args)
 static void		get_width(char **str, t_printf *cur, t_args **args)
 {
 	int		res;
+	char	*tmp;
 
 	res = 0;
+	tmp = *str;
 	while (ft_isdigit(*(++(*str))))
 		res = res * 10 + **str - '0';
 	if (res && **str == '$')
@@ -95,7 +102,17 @@ static void		get_width(char **str, t_printf *cur, t_args **args)
 		cur->width_asterisk = res; //--- here
 	}
 	else
-		(*str)--;
+	{
+		if (tmp != --(*str))
+		{
+			if (!res)
+				cur->zero = '0';
+			else
+				cur->width = res;
+		}
+		cur->width_asterisk = cur->arg_number;
+		arg_malloc(args, cur, cur->arg_number++);
+	}
 }
 
 void			ft_printf_parsing(char **format, t_printf *cur, t_args **args, int *max_arg)
@@ -122,7 +139,7 @@ void			ft_printf_parsing(char **format, t_printf *cur, t_args **args, int *max_a
 			get_width(format, cur, args);
 		else
 			break;
-	if (cur->left_adjusted && cur->zero == '0')
+	if (cur->left_adjusted)
 		cur->zero = ' ';
 	while (ft_strchr(PRINTF_FLAGS, **format))
 		cur->arg_type *= *((*format)++);

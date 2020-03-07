@@ -6,7 +6,7 @@
 /*   By: aimelda <aimelda@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/13 21:34:49 by aimelda           #+#    #+#             */
-/*   Updated: 2020/03/04 05:59:34 by aimelda          ###   ########.fr       */
+/*   Updated: 2020/03/07 13:05:44 by aimelda          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -248,7 +248,8 @@ int			to_float(t_printf *cur, long double n)
 	if (!(cur->left_adjusted))
 		while (cur->width > tmp++)
 			ft_putchar(cur->zero);
-	ft_putchar(cur->sign);
+	if (cur->sign)
+		ft_putchar(cur->sign);
 	put_float(cur, index, len);
 	if (cur->left_adjusted)
 		while (cur->width > tmp++)

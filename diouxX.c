@@ -6,7 +6,7 @@
 /*   By: aimelda <aimelda@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/08 13:39:29 by aimelda           #+#    #+#             */
-/*   Updated: 2020/03/04 06:13:41 by aimelda          ###   ########.fr       */
+/*   Updated: 2020/03/07 15:04:15 by aimelda          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,11 +80,11 @@ int			to_unsigned_num(t_printf *cur, int base)
 	len = get_length(cur, base);
 	tmp = ft_max(len, cur->precision);
 	if (base == 8)
-		tmp += cur->sharp;
+		tmp += cur->sharp * ((cur->precision <= len && *(long long*)cur->content) || !len);
 	if (!(cur->left_adjusted))
 		while (cur->width > tmp++)
 			ft_putchar(cur->zero);
-	if (base == 8 && cur->sharp && cur->precision <= len)
+	if (base == 8 && cur->sharp && ((cur->precision <= len && *(long long*)cur->content) || !len))
 		ft_putchar('0');
 	get_string(cur, len, base, 0);
 	if (cur->left_adjusted)
@@ -101,8 +101,8 @@ int			to_unsigned_hex(t_printf *cur, unsigned long long n, int base)
 	int					tmp;
 
 	len = get_length(cur, base);
-	tmp = ft_max(len, cur->precision) + 2 * cur->sharp * (n > 0);
-	if (cur->zero == '0' && cur->sharp && n > 0)
+	tmp = ft_max(len, cur->precision) + 2 * (cur->sharp < 0 || (cur->sharp && n));
+	if (cur->zero == '0' && ((cur->sharp && n) || cur->sharp < 0))
 	{
 		ft_putchar('0');
 		ft_putchar(cur->arg_type);
@@ -110,7 +110,7 @@ int			to_unsigned_hex(t_printf *cur, unsigned long long n, int base)
 	if (!(cur->left_adjusted))
 		while (cur->width > tmp++)
 			ft_putchar(cur->zero);
-	if (cur->zero == ' ' && cur->sharp && n > 0)
+	if (cur->zero == ' ' && ((cur->sharp && n) || cur->sharp < 0))
 	{
 		ft_putchar('0');
 		ft_putchar(cur->arg_type);
@@ -119,5 +119,6 @@ int			to_unsigned_hex(t_printf *cur, unsigned long long n, int base)
 	if (cur->left_adjusted)
 		while (cur->width > tmp++)
 			ft_putchar(cur->zero);
+	free(cur->content);
 	return (tmp - 1);
 }
