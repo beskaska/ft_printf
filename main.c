@@ -6,13 +6,14 @@
 /*   By: aimelda <aimelda@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/25 20:08:41 by aimelda           #+#    #+#             */
-/*   Updated: 2020/03/04 07:12:17 by aimelda          ###   ########.fr       */
+/*   Updated: 2020/03/05 21:49:30 by aimelda          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
 #include "ft_printf.h"
 #include "float.h"
+#include "limits.h"
 
 int		main()
 {
@@ -28,7 +29,8 @@ int		main()
 	//ans1 = printf(str, d, ans2, c, p, gg);
 	//ans2 = ft_printf(str, d, ans2, c, p, gg);
 	
-	ans1 = printf("2: %03.2d\n", 0);
-	ans2 = ft_printf("1: %03.2d\n", 0);
+	ans1 = printf("1: %p\n", p);
+	ans2 = ft_printf("2: %p\n", p);
 	printf("%d vs. %d\n", ans1, ans2);
+	printf("%llu\n", ULLONG_MAX);
 }

@@ -6,7 +6,7 @@
 /*   By: aimelda <aimelda@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 19:26:23 by aimelda           #+#    #+#             */
-/*   Updated: 2020/03/02 20:56:06 by aimelda          ###   ########.fr       */
+/*   Updated: 2020/03/05 21:29:14 by aimelda          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,7 @@ void			ft_printf_parsing(char **format, t_printf *cur, t_args **args, int *max_a
 	while (ft_strchr(PRINTF_FLAGS, **format))
 		cur->arg_type *= *((*format)++);
 	if (ft_strchr(CONVERSION_SPECIFIERS, **format))
-	{
+	{	
 		cur->arg_type *= **format;
 		if (!args[cur->arg_number])
 			arg_malloc(args, cur, cur->arg_number);

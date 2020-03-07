@@ -6,7 +6,7 @@
 /*   By: aimelda <aimelda@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/23 21:58:49 by aimelda           #+#    #+#             */
-/*   Updated: 2020/03/01 20:07:41 by aimelda          ###   ########.fr       */
+/*   Updated: 2020/03/05 21:11:35 by aimelda          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,15 +26,15 @@
 
 typedef struct	s_printf
 {
-	char			*text;
 	size_t			text_length;
 	size_t			arg_type;
 	void			*content;
-	int				arg_number;
+	char			*text;
 	char			sign;
 	char			zero;
 	char			sharp;
 	char			left_adjusted;
+	int				arg_number;
 	int				width_asterisk; //-1 - if not defined; 0 - if defined; >0 - number of an arg 
 	int				width;
 	int				precision_asterisk; //-1 - if not defined; 0 - if defined; >0 - number of an arg
