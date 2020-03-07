@@ -6,9 +6,44 @@
 /*   By: aimelda <aimelda@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/07 19:38:58 by aimelda           #+#    #+#             */
-/*   Updated: 2020/03/07 19:53:49 by aimelda          ###   ########.fr       */
+/*   Updated: 2020/03/08 00:06:53 by aimelda          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+static void	sasha4(char *num, unsigned long long *oida,
+					int i, unsigned long long b)
+{
+	if (!num[i])
+	{
+		num[i + 1] = '\0';
+		num[i] = '0';
+	}
+	num[i] = (*oida += num[i] - '0') / b;
+	*oida = (*oida - num[i] * b) * 10;
+	num[i] += '0';
+}
+
+static void	sasha5(int *exp, unsigned long long *b, int flag)
+{
+	if (flag)
+	{
+		*exp += 32;
+		while (*exp > 0)
+		{
+			(*exp)--;
+			*b /= 2;
+		}
+	}
+	else
+	{
+		*exp -= 32;
+		while (*exp < 0)
+		{
+			(*exp)++;
+			*b /= 2;
+		}
+	}
+}
 
 static void	rounding(char **num, int start, int *len)
 {
@@ -24,7 +59,7 @@ static void	rounding(char **num, int start, int *len)
 			if ((*num)[i] > '0')
 			{
 				flag = 1;
-				break;
+				break ;
 			}
 	if (flag)
 	{
@@ -39,7 +74,7 @@ static void	rounding(char **num, int start, int *len)
 	}
 }
 
-char 		*ft_printf_multiply(char *num, int *len, int exp)
+char		*ft_printf_multiply(char *num, int *len, int exp)
 {
 	unsigned long long	b;
 	unsigned long long	oida;
@@ -49,12 +84,7 @@ char 		*ft_printf_multiply(char *num, int *len, int exp)
 	oida = 0;
 	while (exp)//determine and define
 	{
-		exp -= 32;
-		while (exp < 0)
-		{
-			exp++;
-			b /= 2;
-		}
+		sasha5(&exp, &b, 0);
 		i = *len;
 		while (i--)
 		{
@@ -82,23 +112,11 @@ char		*ft_printf_divide(char *num, int *len, int exp, int precision)
 	oida = 0;
 	while (exp)
 	{
-		exp += 32;
-		while (exp > 0)
-		{
-			exp--;
-			b /= 2;
-		}
+		sasha5(&exp, &b, 1);
 		i = 0;
 		while (num[i] || oida)
 		{
-			if (!num[i])
-			{
-				num[i + 1] = '\0';
-				num[i] = '0';
-			}
-			num[i] = (oida += num[i] - '0') / b;
-			oida = (oida - num[i] * b) * 10;
-			num[i] += '0';
+			sasha4(num, &oida, i, b);
 			if (*num == '0')
 			{
 				--(*len);

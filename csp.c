@@ -6,7 +6,7 @@
 /*   By: aimelda <aimelda@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/12 21:22:45 by aimelda           #+#    #+#             */
-/*   Updated: 2020/03/07 20:01:34 by aimelda          ###   ########.fr       */
+/*   Updated: 2020/03/07 22:22:36 by aimelda          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,13 @@ static int	to_unsigned_char(t_printf *cur)
 {
 	int		tmp;
 
-	if (cur->argtype > 1 && *(unsigned long long*)(cur->content) > 255)//define
+	if (cur->argt > 1 && *(unsigned long long*)(cur->content) > 255)//define
 		return (-1);
 	tmp = 1;
 	if (!(cur->left_adjusted))
 		while (cur->width > tmp++)
 			ft_putchar(cur->zero);
-	if (cur->argtype == 1)
+	if (cur->argt == 1)
 		ft_putchar('%');
 	else
 	{
@@ -63,9 +63,9 @@ static int	to_str_pointer(t_printf *cur, char *str)
 
 int			to_csp(t_printf *cur)
 {
-	if (cur->argtype == 'c' || cur->argtype == 1)
+	if (cur->argt == 'c' || cur->argt == 1)
 		return (to_unsigned_char(cur));
-	else if (cur->argtype == 's')
+	else if (cur->argt == 's')
 		return (to_str_pointer(cur, cur->content));
 	return (0);
 }

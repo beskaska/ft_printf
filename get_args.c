@@ -6,75 +6,67 @@
 /*   By: aimelda <aimelda@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/15 20:19:47 by aimelda           #+#    #+#             */
-/*   Updated: 2020/03/07 20:56:54 by aimelda          ###   ########.fr       */
+/*   Updated: 2020/03/07 22:44:38 by aimelda          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-static void	free_args(t_args *to_del)
+static void		sasha2(t_printf *cur, va_list ap)
 {
-	t_args	*tmp;
-
-	while (to_del->next)
-	{
-		tmp = to_del->next;
-		tmp->usedin->content = to_del->usedin->content;
-		free(to_del);
-		to_del = tmp;
-	}
-	free(to_del);
-}
-
-static void		get_long_long(t_printf *cur, va_list ap)
-{
-	cur->content = malloc(sizeof(long long));//if NULL
-	if (!(cur->argtype % ('l' * 'l')))
-	{
-		*(long long*)cur->content = va_arg(ap, long long);
-		cur->argtype /= 'l' * 'l';
-	}
-	else if (!(cur->argtype % ('h' * 'h')))
-	{
-		*(long long*)cur->content = va_arg(ap, char);
-		cur->argtype /=  'h' * 'h';
-		if (cur->argtype != 'd' && cur->argtype != 'i')
-			*(long long*)cur->content &= 255;//define
-	}
-	else if (!(cur->argtype % 'l'))
-	{
-		*(long long*)cur->content = va_arg(ap, long);
-		cur->argtype /= 'l';
-	}
-	else if (!(cur->argtype % 'h'))
+	if (!(cur->argt % 'h'))
 	{
 		*(long long*)cur->content = (int)va_arg(ap, short);
-		cur->argtype /= 'h';
-		if (cur->argtype != 'd' && cur->argtype != 'i')
+		cur->argt /= 'h';
+		if (cur->argt != 'd' && cur->argt != 'i')
 			*(long long*)cur->content &= 65535;//define
 	}
 	else
 	{
 		*(long long*)cur->content = va_arg(ap, int);
-		if (cur->argtype != 'd' && cur->argtype != 'i')
+		if (cur->argt != 'd' && cur->argt != 'i')
 			*(long long*)cur->content &= 4294967295;//define
 	}
-	if (cur->argtype != 'c' && !cur->precision_asterisk)
+}
+
+static void		get_long_long(t_printf *cur, va_list ap)
+{
+	cur->content = malloc(sizeof(long long));//if NULL
+	if (!(cur->argt % ('l' * 'l')))
+	{
+		*(long long*)cur->content = va_arg(ap, long long);
+		cur->argt /= 'l' * 'l';
+	}
+	else if (!(cur->argt % ('h' * 'h')))
+	{
+		*(long long*)cur->content = va_arg(ap, char);
+		cur->argt /= 'h' * 'h';
+		if (cur->argt != 'd' && cur->argt != 'i')
+			*(long long*)cur->content &= 255;//define
+	}
+	else if (!(cur->argt % 'l'))
+	{
+		*(long long*)cur->content = va_arg(ap, long);
+		cur->argt /= 'l';
+	}
+	else
+		sasha2(cur, ap);
+	if (cur->argt != 'c' && !cur->precision_asterisk)
 		cur->zero = ' ';
 }
 
 static void		get_long_double(t_printf *cur, va_list ap)
 {
 	cur->content = malloc(sizeof(long double));//if NULL
-	if (!(cur->argtype % 'l'))
+	if (!(cur->argt % 'l'))
 	{
 		*(long double*)cur->content = va_arg(ap, double);
-		cur->argtype /= 'l';
+		cur->argt /= 'l';
 	}
-	else if (!(cur->argtype % 'L'))
+	else if (!(cur->argt % 'L'))
 	{
 		*(long double*)cur->content = va_arg(ap, long double);
-		cur->argtype /= 'L';
+		cur->argt /= 'L';
 	}
 	else
 		*(long double*)cur->content = va_arg(ap, double);
@@ -84,62 +76,58 @@ static void		get_long_double(t_printf *cur, va_list ap)
 		cur->sign = '-';
 }
 
-static int		get_precision_or_width(t_printf *cur, va_list ap, int i)
+static int		get_precision_or_width(t_printf *cur, va_list ap, int i, int t)
 {
-	int		tmp;
-
 	if (cur->width_asterisk == i)
 	{
-		if ((tmp = va_arg(ap, int)) < 0)
+		if ((t = va_arg(ap, int)) < 0)
 		{
 			cur->left_adjusted = 1;
 			cur->zero = ' ';
-			cur->width = ft_abs(tmp);
+			cur->width = ft_abs(t);
 		}
 		else if (!cur->width)
-			cur->width = tmp;
-		return (1);
+			cur->width = t;
 	}
 	if (cur->precision_asterisk == i)
 	{
-		if ((tmp = va_arg(ap, int)) < 0)
+		if ((t = va_arg(ap, int)) < 0)
 		{
 			cur->precision = 0;
 			cur->precision_asterisk = -1;
 		}
 		else if (!cur->precision)
-			cur->precision = tmp;
+			cur->precision = t;
 		return (1);
 	}
+	if (cur->width_asterisk == i)
+		return (1);
 	return (0);
 }
 
-void			ft_printf_get_args(t_args **args, va_list ap)
+void			ft_printf_get_args(t_args **args, va_list ap, int i)
 {
-	int			i;
 	t_printf	*tmp;
 
-	i = 0;
 	while (++i < MAX_PRINTF_ARG)
 		if (args[i])
 		{
 			tmp = args[i]->usedin;
-			if (get_precision_or_width(tmp, ap, i))
+			if (get_precision_or_width(tmp, ap, i, 0))
 				continue;
-			if (tmp->argtype == 'p')
+			if (tmp->argt == 'p')
 			{
-				tmp->argtype = 'l' * 'l' * 'x';
+				tmp->argt = 'l' * 'l' * 'x';
 				tmp->sharp = -1;
 			}
-			if (!(tmp->argtype % 'd') || !(tmp->argtype % 'i') ||
-			!(tmp->argtype % 'o') || !(tmp->argtype % 'u') ||
-			!(tmp->argtype % 'x') || !(tmp->argtype % 'X') ||
-			!(tmp->argtype % 'c'))
+			if (!(tmp->argt % 'd') || !(tmp->argt % 'i') || !(tmp->argt % 'o')
+			|| !(tmp->argt % 'u') || !(tmp->argt % 'x') || !(tmp->argt % 'X')
+			|| !(tmp->argt % 'c'))
 				get_long_long(tmp, ap);
-			else if (!(tmp->argtype % 'f') || !(tmp->argtype % 'e')
-			|| !(tmp->argtype % 'g'))
+			else if (!(tmp->argt % 'f') || !(tmp->argt % 'e')
+			|| !(tmp->argt % 'g'))
 				get_long_double(tmp, ap);
-			else if (!(tmp->argtype % 's'))
+			else if (!(tmp->argt % 's'))
 				if (!(tmp->content = va_arg(ap, void*)))
 					tmp->content = ft_strdup("(null)");
 			free_args(args[i]);

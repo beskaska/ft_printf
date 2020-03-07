@@ -6,7 +6,7 @@
 #    By: aimelda <aimelda@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/09/06 21:18:08 by aimelda           #+#    #+#              #
-#    Updated: 2020/03/07 19:40:18 by aimelda          ###   ########.fr        #
+#    Updated: 2020/03/07 22:47:45 by aimelda          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,9 +18,10 @@ LIB		=	libft/libft.a
 
 SRC		=	ft_printf.c			\
 			parsing.c			\
+			arg_malloc.c		\
 			get_args.c			\
 			printing.c			\
-			diouxX.c			\
+			dioux.c				\
 			csp.c				\
 			feg.c				\
 			arithmetic.c		\

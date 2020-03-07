@@ -6,7 +6,7 @@
 /*   By: aimelda <aimelda@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/13 21:34:49 by aimelda           #+#    #+#             */
-/*   Updated: 2020/03/07 19:49:00 by aimelda          ###   ########.fr       */
+/*   Updated: 2020/03/07 23:10:56 by aimelda          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ static char	*num_to_txt(unsigned long long n, int exp, int *len)
 
 static char	*get_number(t_printf *cur, char *txt, int *exp, int *len)
 {
+	*len = 1;
 	if ((*exp = *(short*)(txt + 8)) < 0)
 		*exp = (short)*exp ^ (short)-32768;
 	if (*exp == 32767)
@@ -55,10 +56,7 @@ static char	*get_number(t_printf *cur, char *txt, int *exp, int *len)
 		return (txt);
 	}
 	else if (!*exp && !(*(unsigned long long*)(txt)))
-	{
-		*len = 1;
 		return (txt = ft_strdup("0"));
-	}
 	else
 		*exp = *exp - EXPONENT_BIAS - (sizeof(long long) * 8 - 1);
 	return (num_to_txt(*(unsigned long long*)(txt), *exp, len));
@@ -81,7 +79,7 @@ static void	put_float(t_printf *cur, char *txt, int len)
 		ft_putchar('0');
 	if (cur->precision || cur->sharp)
 		ft_putchar('.');
-	while(cur->precision && *txt)
+	while (cur->precision && *txt)
 	{
 		cur->precision--;
 		if (++len > 0)
@@ -91,6 +89,20 @@ static void	put_float(t_printf *cur, char *txt, int len)
 	}
 	while (cur->precision--)
 		ft_putchar('0');
+}
+
+static int	sasha3(t_printf *cur, int len, int tmp, char *index)
+{
+	if (!(cur->left_adjusted))
+		while (cur->width > tmp++)
+			ft_putchar(cur->zero);
+	if (cur->zero == ' ' && cur->sign)
+		ft_putchar(cur->sign);
+	put_float(cur, index, len);
+	if (cur->left_adjusted)
+		while (cur->width > tmp++)
+			ft_putchar(cur->zero);
+	return (tmp);
 }
 
 int			to_float(t_printf *cur, long double n)
@@ -112,15 +124,7 @@ int			to_float(t_printf *cur, long double n)
 		tmp += 1;
 	if (cur->zero == '0' && cur->sign)
 		ft_putchar(cur->sign);
-	if (!(cur->left_adjusted))
-		while (cur->width > tmp++)
-			ft_putchar(cur->zero);
-	if (cur->zero == ' ' && cur->sign)
-		ft_putchar(cur->sign);
-	put_float(cur, index, len);
-	if (cur->left_adjusted)
-		while (cur->width > tmp++)
-			ft_putchar(cur->zero);
+	tmp = sasha3(cur, len, tmp, index);
 	free(cur->content);
 	free(txt);
 	return (tmp - 1);
