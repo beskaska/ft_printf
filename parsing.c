@@ -6,13 +6,13 @@
 /*   By: aimelda <aimelda@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 19:26:23 by aimelda           #+#    #+#             */
-/*   Updated: 2020/03/07 14:58:08 by aimelda          ###   ########.fr       */
+/*   Updated: 2020/03/07 21:16:11 by aimelda          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-static void		arg_malloc(t_args **args, t_printf *cur, int res)
+static void		arg_malloc(t_args **args, t_printf *cur, int res, int *dst)
 {
 	t_args	*tmp;
 
@@ -28,6 +28,7 @@ static void		arg_malloc(t_args **args, t_printf *cur, int res)
 		args[res]->next = NULL;
 	}
 	args[res]->usedin = cur;
+	*dst = res;
 }
 
 static void		arg_or_width(char **str, t_printf *cur, t_args **args)
@@ -37,42 +38,33 @@ static void		arg_or_width(char **str, t_printf *cur, t_args **args)
 	res = 0;
 	while (ft_isdigit(**str))
 		res = res * 10 + *((*str)++) - '0';
-	if (res && **str == '$') //probably need to handle multiple using of an argument
-	{
-		arg_malloc(args, cur, res);
-		cur->arg_number = res;
-	}
+	if (res && **str == '$')
+		arg_malloc(args, cur, res, &cur->arg_number);
 	else
 	{
-		cur->width = res; //--- here
-		cur->width_asterisk = 0; //--- here
+		cur->width = res;
+		cur->width_asterisk = 0;
 		(*str)--;
 	}
 }
 
-static void		get_precision(char **str, t_printf *cur, t_args **args)
+static void		get_precision(char **str, t_printf *cur, t_args **args, char c)
 {
 	int		res;
-	char	c;
 
 	res = 0;
-	c = 0;
 	if (!ft_isdigit(*(++(*str))))
 		c = *((*str)++);
 	while (ft_isdigit(**str))
 		res = res * 10 + *((*str)++) - '0';
 	if (c == '*')
 		if (res && **str == '$')
-		{
-			arg_malloc(args, cur, res);
-			cur->precision_asterisk = res; //--- here
-		}
+			arg_malloc(args, cur, res, &cur->precision_asterisk);
 		else
 		{
 			--(*str);
 			cur->precision = res;
-			cur->precision_asterisk = cur->arg_number;
-			arg_malloc(args, cur, cur->arg_number++);
+			arg_malloc(args, cur, cur->arg_number++, &cur->precision_asterisk);
 		}
 	else
 	{
@@ -97,10 +89,7 @@ static void		get_width(char **str, t_printf *cur, t_args **args)
 	while (ft_isdigit(*(++(*str))))
 		res = res * 10 + **str - '0';
 	if (res && **str == '$')
-	{
-		arg_malloc(args, cur, res);
-		cur->width_asterisk = res; //--- here
-	}
+		arg_malloc(args, cur, res, &cur->width_asterisk);
 	else
 	{
 		if (tmp != --(*str))
@@ -110,14 +99,13 @@ static void		get_width(char **str, t_printf *cur, t_args **args)
 			else
 				cur->width = res;
 		}
-		cur->width_asterisk = cur->arg_number;
-		arg_malloc(args, cur, cur->arg_number++);
+		arg_malloc(args, cur, cur->arg_number++, &cur->width_asterisk);
 	}
 }
 
 void			ft_printf_parsing(char **format, t_printf *cur, t_args **args, int *max_arg)
 {
-	while ((*format)++)
+	while (++(*format))
 		if (**format >= '1' && **format <= '9')
 			arg_or_width(format, cur, args);
 		else if (**format == '+')
@@ -134,20 +122,20 @@ void			ft_printf_parsing(char **format, t_printf *cur, t_args **args, int *max_a
 		else if (**format == '-')
 			cur->left_adjusted = 1;
 		else if (**format == '.')
-			get_precision(format, cur, args);
+			get_precision(format, cur, args, 0);
 		else if (**format == '*')
 			get_width(format, cur, args);
 		else
-			break;
+			break ;
 	if (cur->left_adjusted)
 		cur->zero = ' ';
 	while (ft_strchr(PRINTF_FLAGS, **format))
-		cur->arg_type *= *((*format)++);
+		cur->argtype *= *((*format)++);
 	if (ft_strchr(CONVERSION_SPECIFIERS, **format))
-	{	
-		cur->arg_type *= **format;
+	{
+		cur->argtype *= **format;
 		if (!args[cur->arg_number])
-			arg_malloc(args, cur, cur->arg_number);
+			arg_malloc(args, cur, cur->arg_number, &cur->arg_number);
 	}
 	else if (**format == '%')
 		cur->content = (void*)'%';

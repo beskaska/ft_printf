@@ -6,7 +6,7 @@
 #    By: aimelda <aimelda@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/09/06 21:18:08 by aimelda           #+#    #+#              #
-#    Updated: 2020/02/29 12:08:00 by aimelda          ###   ########.fr        #
+#    Updated: 2020/03/07 19:40:18 by aimelda          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,6 +23,7 @@ SRC		=	ft_printf.c			\
 			diouxX.c			\
 			csp.c				\
 			feg.c				\
+			arithmetic.c		\
 
 OBJ		=	$(addsuffix .o, $(basename $(SRC)))
 

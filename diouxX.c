@@ -6,7 +6,7 @@
 /*   By: aimelda <aimelda@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/08 13:39:29 by aimelda           #+#    #+#             */
-/*   Updated: 2020/03/07 15:04:15 by aimelda          ###   ########.fr       */
+/*   Updated: 2020/03/07 20:01:07 by aimelda          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ int			to_unsigned_hex(t_printf *cur, unsigned long long n, int base)
 	if (cur->zero == '0' && ((cur->sharp && n) || cur->sharp < 0))
 	{
 		ft_putchar('0');
-		ft_putchar(cur->arg_type);
+		ft_putchar(cur->argtype);
 	}
 	if (!(cur->left_adjusted))
 		while (cur->width > tmp++)
@@ -113,9 +113,9 @@ int			to_unsigned_hex(t_printf *cur, unsigned long long n, int base)
 	if (cur->zero == ' ' && ((cur->sharp && n) || cur->sharp < 0))
 	{
 		ft_putchar('0');
-		ft_putchar(cur->arg_type);
+		ft_putchar(cur->argtype);
 	}
-	get_string(cur, len, base, cur->arg_type - 81);
+	get_string(cur, len, base, cur->argtype - 81);
 	if (cur->left_adjusted)
 		while (cur->width > tmp++)
 			ft_putchar(cur->zero);

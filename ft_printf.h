@@ -6,7 +6,7 @@
 /*   By: aimelda <aimelda@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/23 21:58:49 by aimelda           #+#    #+#             */
-/*   Updated: 2020/03/05 21:11:35 by aimelda          ###   ########.fr       */
+/*   Updated: 2020/03/07 19:59:21 by aimelda          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@
 typedef struct	s_printf
 {
 	size_t			text_length;
-	size_t			arg_type;
+	size_t			argtype;
 	void			*content;
 	char			*text;
 	char			sign;
@@ -57,5 +57,7 @@ int				to_unsigned_num(t_printf *cur, int base);
 int				to_unsigned_hex(t_printf *cur, unsigned long long n, int base);
 int				to_csp(t_printf *cur);
 int				to_float(t_printf *cur, long double n);
+char 			*ft_printf_multiply(char *num, int *len, int exp);
+char			*ft_printf_divide(char *num, int *len, int exp, int precision);
 
 #endif

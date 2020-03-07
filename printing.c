@@ -6,7 +6,7 @@
 /*   By: aimelda <aimelda@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/08 16:30:25 by aimelda           #+#    #+#             */
-/*   Updated: 2020/03/07 16:21:56 by aimelda          ###   ########.fr       */
+/*   Updated: 2020/03/07 20:01:40 by aimelda          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,15 +23,15 @@ static t_printf	*free_printf(t_printf *to_del)
 
 static int		converting(t_printf *cur)
 {
-	if (cur->arg_type == 'd' || cur->arg_type == 'i')
+	if (cur->argtype == 'd' || cur->argtype == 'i')
 		return (to_signed_dec(cur, 10));
-	else if (cur->arg_type == 'o')
+	else if (cur->argtype == 'o')
 		return (to_unsigned_num(cur, 8));
-	else if (cur->arg_type == 'u')
+	else if (cur->argtype == 'u')
 		return (to_unsigned_num(cur, 10));
-	else if (cur->arg_type == 'x' || cur->arg_type == 'X' || cur->arg_type == 'p')
+	else if (cur->argtype == 'x' || cur->argtype == 'X' || cur->argtype == 'p')
 		return (to_unsigned_hex(cur, *(unsigned long long*)cur->content, 16));
-	else if (cur->arg_type == 'f')
+	else if (cur->argtype == 'f')
 		return (to_float(cur, *(long double*)cur->content));
 	else
 		return (to_csp(cur));

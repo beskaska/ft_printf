@@ -6,7 +6,7 @@
 /*   By: aimelda <aimelda@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/15 20:19:47 by aimelda           #+#    #+#             */
-/*   Updated: 2020/03/07 15:48:54 by aimelda          ###   ########.fr       */
+/*   Updated: 2020/03/07 20:56:54 by aimelda          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,57 +29,59 @@ static void	free_args(t_args *to_del)
 static void		get_long_long(t_printf *cur, va_list ap)
 {
 	cur->content = malloc(sizeof(long long));//if NULL
-	if (!(cur->arg_type % ('l' * 'l')))
+	if (!(cur->argtype % ('l' * 'l')))
 	{
 		*(long long*)cur->content = va_arg(ap, long long);
-		cur->arg_type /= 'l' * 'l';
+		cur->argtype /= 'l' * 'l';
 	}
-	else if (!(cur->arg_type % ('h' * 'h')))
+	else if (!(cur->argtype % ('h' * 'h')))
 	{
 		*(long long*)cur->content = va_arg(ap, char);
-		cur->arg_type /=  'h' * 'h';
-		if (cur->arg_type != 'd' && cur->arg_type != 'i')
-			*(long long*)cur->content &= 255;//!
+		cur->argtype /=  'h' * 'h';
+		if (cur->argtype != 'd' && cur->argtype != 'i')
+			*(long long*)cur->content &= 255;//define
 	}
-	else if (!(cur->arg_type % 'l'))
+	else if (!(cur->argtype % 'l'))
 	{
 		*(long long*)cur->content = va_arg(ap, long);
-		cur->arg_type /= 'l';
+		cur->argtype /= 'l';
 	}
-	else if (!(cur->arg_type % 'h'))
+	else if (!(cur->argtype % 'h'))
 	{
 		*(long long*)cur->content = (int)va_arg(ap, short);
-		cur->arg_type /= 'h';
-		if (cur->arg_type != 'd' && cur->arg_type != 'i')
-			*(long long*)cur->content &= 65535;//!
+		cur->argtype /= 'h';
+		if (cur->argtype != 'd' && cur->argtype != 'i')
+			*(long long*)cur->content &= 65535;//define
 	}
 	else
 	{
 		*(long long*)cur->content = va_arg(ap, int);
-		if (cur->arg_type != 'd' && cur->arg_type != 'i')
-			*(long long*)cur->content &= 4294967295;//!
+		if (cur->argtype != 'd' && cur->argtype != 'i')
+			*(long long*)cur->content &= 4294967295;//define
 	}
-	if (cur->arg_type != 'c' && !cur->precision_asterisk)
+	if (cur->argtype != 'c' && !cur->precision_asterisk)
 		cur->zero = ' ';
 }
 
 static void		get_long_double(t_printf *cur, va_list ap)
 {
 	cur->content = malloc(sizeof(long double));//if NULL
-	if (!(cur->arg_type % 'l'))
+	if (!(cur->argtype % 'l'))
 	{
 		*(long double*)cur->content = va_arg(ap, double);
-		cur->arg_type /= 'l';
+		cur->argtype /= 'l';
 	}
-	else if (!(cur->arg_type % 'L'))
+	else if (!(cur->argtype % 'L'))
 	{
 		*(long double*)cur->content = va_arg(ap, long double);
-		cur->arg_type /= 'L';
+		cur->argtype /= 'L';
 	}
 	else
 		*(long double*)cur->content = va_arg(ap, double);
 	if (cur->precision_asterisk == -1)
 		cur->precision = 6;
+	if (((char*)cur->content)[9] < 0)
+		cur->sign = '-';
 }
 
 static int		get_precision_or_width(t_printf *cur, va_list ap, int i)
@@ -118,26 +120,26 @@ void			ft_printf_get_args(t_args **args, va_list ap)
 	t_printf	*tmp;
 
 	i = 0;
-	while (++i < MAX_PRINTF_ARG) //check the restriction | max_arg
+	while (++i < MAX_PRINTF_ARG)
 		if (args[i])
 		{
 			tmp = args[i]->usedin;
 			if (get_precision_or_width(tmp, ap, i))
 				continue;
-			if (tmp->arg_type == 'p')
+			if (tmp->argtype == 'p')
 			{
-				tmp->arg_type = 'l' * 'l' * 'x';
+				tmp->argtype = 'l' * 'l' * 'x';
 				tmp->sharp = -1;
 			}
-			if (!(tmp->arg_type % 'd') || !(tmp->arg_type % 'i') ||
-			!(tmp->arg_type % 'o') || !(tmp->arg_type % 'u') ||
-			!(tmp->arg_type % 'x') || !(tmp->arg_type % 'X') ||
-			!(tmp->arg_type % 'c'))
+			if (!(tmp->argtype % 'd') || !(tmp->argtype % 'i') ||
+			!(tmp->argtype % 'o') || !(tmp->argtype % 'u') ||
+			!(tmp->argtype % 'x') || !(tmp->argtype % 'X') ||
+			!(tmp->argtype % 'c'))
 				get_long_long(tmp, ap);
-			else if (!(tmp->arg_type % 'f') || !(tmp->arg_type % 'e')
-			|| !(tmp->arg_type % 'g'))
+			else if (!(tmp->argtype % 'f') || !(tmp->argtype % 'e')
+			|| !(tmp->argtype % 'g'))
 				get_long_double(tmp, ap);
-			else if (!(tmp->arg_type % 's'))
+			else if (!(tmp->argtype % 's'))
 				if (!(tmp->content = va_arg(ap, void*)))
 					tmp->content = ft_strdup("(null)");
 			free_args(args[i]);
