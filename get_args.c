@@ -6,7 +6,7 @@
 /*   By: aimelda <aimelda@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/15 20:19:47 by aimelda           #+#    #+#             */
-/*   Updated: 2020/03/07 22:44:38 by aimelda          ###   ########.fr       */
+/*   Updated: 2020/03/09 13:21:26 by aimelda          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,12 @@
 
 static void		sasha2(t_printf *cur, va_list ap)
 {
-	if (!(cur->argt % 'h'))
+	if (!(cur->argt % 'l'))
+	{
+		*(long long*)cur->content = va_arg(ap, long);
+		cur->argt /= 'l';
+	}
+	else if (!(cur->argt % 'h'))
 	{
 		*(long long*)cur->content = (int)va_arg(ap, short);
 		cur->argt /= 'h';
@@ -43,11 +48,6 @@ static void		get_long_long(t_printf *cur, va_list ap)
 		cur->argt /= 'h' * 'h';
 		if (cur->argt != 'd' && cur->argt != 'i')
 			*(long long*)cur->content &= 255;//define
-	}
-	else if (!(cur->argt % 'l'))
-	{
-		*(long long*)cur->content = va_arg(ap, long);
-		cur->argt /= 'l';
 	}
 	else
 		sasha2(cur, ap);
@@ -115,21 +115,20 @@ void			ft_printf_get_args(t_args **args, va_list ap, int i)
 			tmp = args[i]->usedin;
 			if (get_precision_or_width(tmp, ap, i, 0))
 				continue;
-			if (tmp->argt == 'p')
-			{
-				tmp->argt = 'l' * 'l' * 'x';
-				tmp->sharp = -1;
-			}
-			if (!(tmp->argt % 'd') || !(tmp->argt % 'i') || !(tmp->argt % 'o')
+			/*if (!(tmp->argt % 'd') || !(tmp->argt % 'i') || !(tmp->argt % 'o')
 			|| !(tmp->argt % 'u') || !(tmp->argt % 'x') || !(tmp->argt % 'X')
-			|| !(tmp->argt % 'c'))
-				get_long_long(tmp, ap);
-			else if (!(tmp->argt % 'f') || !(tmp->argt % 'e')
+			|| !(tmp->argt % 'p') || !(tmp->argt % 'c'))
+				get_long_long(tmp, ap);*/
+			if (!(tmp->argt % 'f') || !(tmp->argt % 'e')
 			|| !(tmp->argt % 'g'))
 				get_long_double(tmp, ap);
 			else if (!(tmp->argt % 's'))
+			{
 				if (!(tmp->content = va_arg(ap, void*)))
 					tmp->content = ft_strdup("(null)");
+			}
+			else
+				get_long_long(tmp, ap);
 			free_args(args[i]);
 		}
 }

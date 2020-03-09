@@ -6,7 +6,7 @@
 /*   By: aimelda <aimelda@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/23 21:57:51 by aimelda           #+#    #+#             */
-/*   Updated: 2020/03/07 23:12:32 by aimelda          ###   ########.fr       */
+/*   Updated: 2020/03/09 12:54:56 by aimelda          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ static t_printf	*new_node(char *format)
 	tmp->zero = ' ';
 	tmp->sharp = 0;
 	tmp->left_adjusted = 0;
+	tmp->error = 0;
 	tmp->width_asterisk = -1;
 	tmp->width = 0;
 	tmp->precision_asterisk = -1;

@@ -6,7 +6,7 @@
 /*   By: aimelda <aimelda@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 19:26:23 by aimelda           #+#    #+#             */
-/*   Updated: 2020/03/07 23:11:17 by aimelda          ###   ########.fr       */
+/*   Updated: 2020/03/09 13:45:41 by aimelda          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,11 @@ static void		sasha1(char **format, t_printf *cur, t_args **args)
 		cur->argt *= **format;
 		if (!args[cur->arg_number])
 			arg_malloc(args, cur, cur->arg_number, &cur->arg_number);
+		if (**format == 'p')
+		{
+			cur->argt = 'l' * 'l' * 'x';
+			cur->sharp = -1;
+		}
 	}
 	else if (**format == '%')
 		cur->content = (void*)'%';

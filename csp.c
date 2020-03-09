@@ -6,7 +6,7 @@
 /*   By: aimelda <aimelda@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/12 21:22:45 by aimelda           #+#    #+#             */
-/*   Updated: 2020/03/07 22:22:36 by aimelda          ###   ########.fr       */
+/*   Updated: 2020/03/09 12:46:15 by aimelda          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@ static int	to_unsigned_char(t_printf *cur)
 {
 	int		tmp;
 
-	if (cur->argt > 1 && *(unsigned long long*)(cur->content) > 255)//define
-		return (-1);
+	/*if (cur->argt > 1) && *(unsigned long long*)(cur->content) > 255)//define
+		return (-1);*/
 	tmp = 1;
 	if (!(cur->left_adjusted))
 		while (cur->width > tmp++)

@@ -6,7 +6,7 @@
 /*   By: aimelda <aimelda@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/08 16:30:25 by aimelda           #+#    #+#             */
-/*   Updated: 2020/03/07 22:22:00 by aimelda          ###   ########.fr       */
+/*   Updated: 2020/03/09 12:56:00 by aimelda          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ int				ft_printf_print(t_printf *cur)
 	sum = 0;
 	while (cur)
 	{
+		if (cur->error)
+			return (-1);
 		sum += cur->text_length;
 		while (cur->text_length--)
 			ft_putchar(*cur->text++);

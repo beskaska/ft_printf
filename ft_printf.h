@@ -6,7 +6,7 @@
 /*   By: aimelda <aimelda@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/23 21:58:49 by aimelda           #+#    #+#             */
-/*   Updated: 2020/03/07 23:07:38 by aimelda          ###   ########.fr       */
+/*   Updated: 2020/03/09 14:48:32 by aimelda          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ typedef struct	s_printf
 	char			zero;
 	char			sharp;
 	char			left_adjusted;
+	char			error;
 	int				arg_number;
 	int				width_asterisk;
 	int				width;
@@ -54,9 +55,9 @@ void			arg_malloc(t_args **args, t_printf *cur, int res, int *dst);
 void			free_args(t_args *to_del);
 void			ft_printf_get_args(t_args **args, va_list ap, int i);
 int				ft_printf_print(t_printf *cur);
-int				to_signed_dec(t_printf *cur, int base);
-int				to_unsigned_num(t_printf *cur, int base);
-int				to_unsigned_hex(t_printf *cur, unsigned long long n, int base);
+int				to_signed_dec(t_printf *cur, char base);
+int				to_unsigned_num(t_printf *cur, char base);
+int				to_unsigned_hex(t_printf *cur, unsigned long long n, char base);
 int				to_csp(t_printf *cur);
 int				to_float(t_printf *cur, long double n);
 char			*ft_printf_multiply(char *num, int *len, int exp);
