@@ -6,7 +6,7 @@
 /*   By: aimelda <aimelda@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/07 19:38:58 by aimelda           #+#    #+#             */
-/*   Updated: 2020/03/08 00:06:53 by aimelda          ###   ########.fr       */
+/*   Updated: 2020/03/09 16:56:02 by aimelda          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,9 +80,9 @@ char		*ft_printf_multiply(char *num, int *len, int exp)
 	unsigned long long	oida;
 	int					i;
 
-	b = 256UL * 256 * 256 * 256;//determine and define
+	b = 256UL * 256 * 256 * 256;
 	oida = 0;
-	while (exp)//determine and define
+	while (exp)
 	{
 		sasha5(&exp, &b, 0);
 		i = *len;

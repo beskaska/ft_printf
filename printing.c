@@ -6,7 +6,7 @@
 /*   By: aimelda <aimelda@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/08 16:30:25 by aimelda           #+#    #+#             */
-/*   Updated: 2020/03/09 12:56:00 by aimelda          ###   ########.fr       */
+/*   Updated: 2020/03/09 19:23:04 by aimelda          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static int		converting(t_printf *cur)
 	else if (cur->argt == 'x' || cur->argt == 'X' || cur->argt == 'p')
 		return (to_unsigned_hex(cur, *(unsigned long long*)cur->content, 16));
 	else if (cur->argt == 'f')
-		return (to_float(cur, *(long double*)cur->content));
+		return (to_float(cur));
 	else
 		return (to_csp(cur));
 }
@@ -40,6 +40,7 @@ static int		converting(t_printf *cur)
 int				ft_printf_print(t_printf *cur)
 {
 	int		sum;
+	int		tmp;
 
 	sum = 0;
 	while (cur)
@@ -50,7 +51,13 @@ int				ft_printf_print(t_printf *cur)
 		while (cur->text_length--)
 			ft_putchar(*cur->text++);
 		if (cur->content)
-			sum += converting(cur);
+		{
+			tmp = converting(cur);
+			if (tmp == -1)
+				return (-1);
+			else
+				sum += tmp;
+		}
 		cur = free_printf(cur);
 	}
 	return (sum);

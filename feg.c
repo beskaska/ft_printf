@@ -6,7 +6,7 @@
 /*   By: aimelda <aimelda@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/13 21:34:49 by aimelda           #+#    #+#             */
-/*   Updated: 2020/03/07 23:10:56 by aimelda          ###   ########.fr       */
+/*   Updated: 2020/03/09 19:19:58 by aimelda          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,8 @@ static char	*num_to_txt(unsigned long long n, int exp, int *len)
 	*len = MAX_LLONG_DIGIT;
 	if (n < 10000000000000000000UL)
 		--(*len);
-	txt = (char*)malloc(*len + ft_abs(exp) + 1);
+	if (!(txt = (char*)malloc(*len + ft_abs(exp) + 1)))
+		return (NULL);
 	if (exp > 0)
 		nb = *len + ft_abs(exp);
 	else
@@ -105,14 +106,15 @@ static int	sasha3(t_printf *cur, int len, int tmp, char *index)
 	return (tmp);
 }
 
-int			to_float(t_printf *cur, long double n)
+int			to_float(t_printf *cur)
 {
 	int		len;
 	int		tmp;
 	char	*txt;
 	char	*index;
 
-	txt = get_number(cur, (char*)cur->content, &tmp, &len);
+	if (!(txt = get_number(cur, (char*)cur->content, &tmp, &len)))
+		return (-1);
 	if (tmp >= 0)
 		index = ft_printf_multiply(txt + tmp, &len, tmp);
 	else

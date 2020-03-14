@@ -6,7 +6,7 @@
 /*   By: aimelda <aimelda@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/08 13:39:29 by aimelda           #+#    #+#             */
-/*   Updated: 2020/03/09 15:13:18 by aimelda          ###   ########.fr       */
+/*   Updated: 2020/03/09 19:42:04 by aimelda          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static int	get_length(t_printf *cur, char base, unsigned long long *nb)
 	unsigned long long	n;
 
 	n = *(unsigned long long*)cur->content;
-	if (!cur->precision && !n && cur->precision_asterisk > -1)
+	if (!cur->precision && !n && cur->precision_ast > -1)
 		return (0);
 	*nb = 1;
 	len = 1;
