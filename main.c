@@ -6,7 +6,7 @@
 /*   By: aimelda <aimelda@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/25 20:08:41 by aimelda           #+#    #+#             */
-/*   Updated: 2020/03/10 00:12:41 by aimelda          ###   ########.fr       */
+/*   Updated: 2020/08/23 18:38:04 by aimelda          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int		main()
 	//ans1 = printf(str, d, ans2, c, p, gg);
 	//ans2 = ft_printf(str, d, ans2, c, p, gg);
 	
-	ans1 = printf("%.17000Lf\n", LDBL_MIN);
-	ans2 = ft_printf("%.17000Lf\n", LDBL_MIN);
+	ans1 = printf("%*.17Lf\n", 8, LDBL_MIN);
+	ans2 = ft_printf("%*.17Lf\n", 8, LDBL_MIN);
 	printf("%i vs. %i\n", ans1, ans2);
 }

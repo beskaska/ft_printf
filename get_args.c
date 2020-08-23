@@ -6,7 +6,7 @@
 /*   By: aimelda <aimelda@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/15 20:19:47 by aimelda           #+#    #+#             */
-/*   Updated: 2020/03/09 20:10:48 by aimelda          ###   ########.fr       */
+/*   Updated: 2020/08/23 19:24:33 by aimelda          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,6 +117,7 @@ int				ft_printf_get_args(t_args **args, va_list ap, int i)
 		if (args[i])
 		{
 			tmp = args[i]->usedin;
+			free_args(args[i]);
 			if (get_precision_or_width(tmp, ap, i, 0))
 				continue;
 			if (!(tmp->argt % 'f') || !(tmp->argt % 'e') || !(tmp->argt % 'g'))
@@ -132,7 +133,6 @@ int				ft_printf_get_args(t_args **args, va_list ap, int i)
 			}
 			else if (get_long_long(tmp, ap) == -1)
 				return (-1);
-			free_args(args[i]);
 		}
 	return (0);
 }

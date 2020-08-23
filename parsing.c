@@ -6,7 +6,7 @@
 /*   By: aimelda <aimelda@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 19:26:23 by aimelda           #+#    #+#             */
-/*   Updated: 2020/03/09 19:39:23 by aimelda          ###   ########.fr       */
+/*   Updated: 2020/08/23 19:02:59 by aimelda          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ static int		get_width(char **str, t_printf *cur, t_args **args)
 			else
 				cur->width = res;
 		}
-		return (arg_malloc(args, cur, cur->arg_number++, &cur->width_asterisk));
+		return (arg_malloc(args, cur, ++(cur->arg_number), &cur->width_asterisk));
 	}
 }
 

@@ -6,7 +6,7 @@
 /*   By: aimelda <aimelda@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/07 21:43:10 by aimelda           #+#    #+#             */
-/*   Updated: 2020/03/09 19:14:01 by aimelda          ###   ########.fr       */
+/*   Updated: 2020/08/23 18:55:30 by aimelda          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,12 @@ void		free_args(t_args *to_del)
 {
 	t_args	*tmp;
 
-	while (to_del->next)
+	while (to_del)
 	{
-		tmp = to_del->next;
-		tmp->usedin->content = to_del->usedin->content;
-		free(to_del);
-		to_del = tmp;
+		tmp = to_del;
+		to_del = to_del->next;
+		free(tmp);
 	}
-	free(to_del);
 }
 
 int			free_all(t_args **args)
